@@ -9,7 +9,7 @@ import sys
 import matplotlib.pyplot as plt
 script_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 sys.path.insert(0, script_path)
-from logs import logger
+
 from boolnetanalyzer.load import BooleanNet
 import boolnetanalyzer.randomize as rn
 import boolnetanalyzer.utils as ut
@@ -639,7 +639,7 @@ def cubical_homology_poset(vertices,edges,simplex_dim,codimension,cubical_homolo
     
     
     """
-    log = logger.get_logger()
+    
     vertices_jl = jl.Array(vertices)
     edges_jl = jl.Array(edges)
     edges_jl=jl.cubicalhomology.make_transitive(edges_jl)
@@ -745,7 +745,7 @@ def simplicial_to_graph(simplicial_complex,simplex_dim,codimension):
     
     
     """
-    log = logger.get_logger()
+    
     graph = jl.cubicalhomology.simplicial_to_graph(simplicial_complex,simplex_dim,codimension)
     graph = jl.cubicalhomology.relabel_vertices(graph)
     log.write(f"Preprocessing the graph  with {len(graph.vertices)} vertices and {len(graph.edges)} edges")
