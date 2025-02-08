@@ -31,7 +31,8 @@ The :class:`BooleanNet` class represents a boolean network with the following at
   The type of input, such as "rtt", "text", "ncf", etc.
 
 The main function of the class is to load Boolean networks from different sources.
-
+.. automodule:: boolnetanalyzer.load
+    :members:
 .. autofunction:: boolnetanalyzer.load.BooleanNet.load
 
 Below we describe the class and other methods in detail.
