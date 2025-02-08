@@ -56,7 +56,7 @@ intersphinx_mapping = {
     "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
 }
 intersphinx_disabled_domains = ["std"]
-autodoc_mock_imports = ['numpy']
+autodoc_mock_imports = ['numpy', 'pandas']
 templates_path = ["_templates"]
 
 autodoc_class_signature = 'separated' 
