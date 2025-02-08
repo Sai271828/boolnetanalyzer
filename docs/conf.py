@@ -20,7 +20,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 # Go up one level to find the project root
 project_root = os.path.abspath(os.path.join(current_dir, '..'))
-load_module = os.path.abspath(os.path.join(project_root, 'booleantools/load'))
+load_module = os.path.abspath(os.path.join(project_root, 'boolnetanalyzer'))
 # Add the project root to the system path
 sys.path.insert(0, project_root)
 
@@ -28,7 +28,7 @@ sys.path.insert(0, project_root)
 
 # -- Project information -----------------------------------------------------
 
-project = "Boolean Network Tools"
+project = "Boolean Network Analyzer"
 copyright = "Copyright (c) 2024, VENKATA SAI NARAYANA BAVISETTY"
 author = "Venkata Sai Narayana Bavisetty"
 
