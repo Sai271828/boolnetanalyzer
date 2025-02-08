@@ -25,7 +25,7 @@ load_module = os.path.abspath(os.path.join(project_root, 'boolnetanalyzer'))
 # Add the project root to the system path
 sys.path.insert(0, project_root)
 sys.path.insert(0, load_module)
-from boolnetanalyzer.load import BooleanNet
+
 
 
 # -- Project information -----------------------------------------------------
