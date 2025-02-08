@@ -32,11 +32,11 @@ The :class:`BooleanNet` class represents a boolean network with the following at
 
 The main function of the class is to load Boolean networks from different sources.
 
-.. autofunction:: boolnetanalyzer.BooleanNet.load
+.. autofunction:: boolnetanalyzer.load.BooleanNet.load
 
 Below we describe the class and other methods in detail.
 
-.. autoclass:: boolnetanalyzer.BooleanNet
+.. autoclass:: boolnetanalyzer.load.BooleanNet
    :members: update, add, add_node, add_edge, change_format
    :exclude-members: __init__, add_ncf, add_rtt, add_text, add_edge_ncf, add_edge_rtt, add_edge_text, add_node_ncf, add_node_rtt, add_node_text, load_ncf, load_rtt, load_text, update_ncf, update_rtt, update_text,change_format_ncf, change_format_rtt, change_format_text  
 

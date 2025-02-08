@@ -9,11 +9,11 @@ The package is organized into the following modules:
 
 * :mod:`boolnetanalyzer.utils` - Utility functions
 
-* :mod:`boolnetanalyzer..random_networks` - Functions to generate random Boolean networks
+* :mod:`boolnetanalyzer.random_networks` - Functions to generate random Boolean networks
 
-* :mod:`boolnetanalyzer..bn_tools` - Functions to analyze Boolean networks
+* :mod:`boolnetanalyzer.bn_tools` - Functions to analyze Boolean networks
 
-* :mod:`boolnetanalyzer..load` - Functions to load Boolean networks from files
+* :mod:`boolnetanalyzer.load` - Functions to load Boolean networks from files
 
 The package is developed by the Laboratory for Systems Medicine at the University of Florida.
 
