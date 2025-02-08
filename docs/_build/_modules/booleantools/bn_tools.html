@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>booleantools.bn_tools</title>
+    
+          <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../_static/theme-vendors.js"></script> -->
+      <script src="../../_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="../../genindex.html" />
+  <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../index.html" class="home-link">
+    
+      <span class="site-name">Boolean Network Tools</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../index.html#boolean-tools">boolean tools</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../installation.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../representing_boolean_networks.html" class="reference internal ">Representing Boolean Networks</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../functions.html" class="reference internal ">Reference</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../index.html">Module code</a> &raquo;</li>
+    
+    <li>booleantools.bn_tools</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <h1>Source code for booleantools.bn_tools</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This file contains tools to analyze boolean networks</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">networkx</span> <span class="k">as</span> <span class="nn">nx</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">itertools</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">script_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">script_path</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">logs</span> <span class="kn">import</span> <span class="n">logger</span>
+<span class="kn">from</span> <span class="nn">booleantools.load</span> <span class="kn">import</span> <span class="n">BooleanNet</span>
+<span class="kn">import</span> <span class="nn">booleantools.randomize</span> <span class="k">as</span> <span class="nn">rn</span>
+<span class="kn">import</span> <span class="nn">booleantools.utils</span> <span class="k">as</span> <span class="nn">ut</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">json</span> 
+<span class="c1"># load the environmental variable from the .env file</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="n">load_dotenv</span><span class="p">()</span>
+
+<span class="c1"># Define the path to your Julia file</span>
+<span class="c1"># Check if the environment variable for julia is set to True</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;JULIA&quot;</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">juliacall</span> <span class="kn">import</span> <span class="n">Main</span> <span class="k">as</span> <span class="n">jl</span>
+    <span class="n">julia_package_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">script_path</span><span class="p">,</span><span class="s2">&quot;booleantools&quot;</span><span class="p">)</span>
+    <span class="n">julia_package_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">julia_package_path</span><span class="p">,</span><span class="s2">&quot;cubicalhomology&quot;</span><span class="p">)</span>
+    <span class="n">jl</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">&#39;using Pkg&#39;</span><span class="p">)</span>
+    <span class="n">jl</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">&#39;Pkg.activate(julia_package_path)&#39;</span><span class="p">)</span>
+    <span class="n">jl</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">&#39;Pkg.update(julia_package_path)&#39;</span><span class="p">)</span>
+    <span class="n">jl</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s2">&quot;Pkg.build(julia_package_path)&quot;</span><span class="p">)</span>
+    <span class="n">jl</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s1">&#39;Pkg.status()&#39;</span><span class="p">)</span>
+    <span class="n">julia_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">julia_package_path</span><span class="p">,</span><span class="s2">&quot;src&quot;</span><span class="p">)</span>
+    <span class="n">julia_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">julia_file_path</span><span class="p">,</span><span class="s2">&quot;cubicalhomology.jl&quot;</span><span class="p">)</span>
+    <span class="c1"># Check that the environment has been activated</span>
+    <span class="n">jl</span><span class="o">.</span><span class="n">include</span><span class="p">(</span><span class="n">julia_file_path</span><span class="p">)</span>
+    <span class="c1"># Use the package within the Julia environment</span>
+    <span class="n">jl</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s2">&quot;using cubicalhomology&quot;</span><span class="p">)</span>
+    <span class="n">jl</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s2">&quot;using SparseArrays&quot;</span><span class="p">)</span>
+    <span class="n">jl</span><span class="o">.</span><span class="n">eval</span><span class="p">(</span><span class="s2">&quot;using LinearAlgebra&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="essential_variables">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.essential_variables">[docs]</a>
+<span class="k">def</span> <span class="nf">essential_variables</span><span class="p">(</span><span class="n">function</span><span class="p">,</span><span class="n">regulators</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Identify the essential variables in a Boolean function.</span>
+<span class="sd">    The essential variables are the variables that are necessary to determine the output of the function.</span>
+<span class="sd">    We identify the essential variables by checking if the function output changes when the variable is flipped.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        function (list or np.array): </span>
+<span class="sd">            Boolean function represented as a list or numpy array.</span>
+<span class="sd">            The function is represented as a vector of 2^n elements, where n is the number of variables.</span>
+<span class="sd">            The function at index i is the output of the function for the binary representation of i.</span>
+<span class="sd">        regulators (list):</span>
+<span class="sd">            List of regulators in the network.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        essential_vars (list): </span>
+<span class="sd">            A list of essential variables in the Boolean function.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; essential_variables(np.array([0, 1, 1, 0]),[&#39;A&#39;,&#39;B&#39;])</span>
+<span class="sd">        [&#39;A&#39;, &#39;B&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; essential_variables(np.array([0, 1, 1, 1]),[&#39;A&#39;,&#39;B&#39;])</span>
+<span class="sd">        [&#39;B&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; essential_variables(np.array([1, 1, 1, 1]),[&#39;A&#39;,&#39;B&#39;])</span>
+<span class="sd">        [0]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    if len(function) &gt; 0:</span>
+<span class="sd">        num_nodes = int(np.log2(len(function)))</span>
+<span class="sd">    else:</span>
+<span class="sd">        print(function)</span>
+<span class="sd">        print(regulators)</span>
+<span class="sd">        raise ValueError(&quot;The length of the function is zero, cannot calculate log2.&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">function</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">regulators</span>
+    <span class="n">num_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">regulators</span><span class="p">)</span>
+
+    <span class="c1"># Initialize a list to store the essential variables</span>
+    <span class="n">essential_vars</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Loop over each variable index to see if the function output changes when the variable is flipped</span>
+    <span class="k">for</span> <span class="n">var_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">):</span>
+        <span class="c1"># Compute the step size for the current variable index</span>
+        <span class="n">step_size</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">num_nodes</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">var_index</span><span class="p">)</span>
+        
+        <span class="c1"># Create a mask to identify which entries depend on the current variable</span>
+        <span class="c1"># If n=3, the mask for the first variable is [0,0,0,0,1,1,1,1]. </span>
+        <span class="c1"># The mask for the second variable is [0,0,1,1,0,0,1,1]. </span>
+        <span class="c1"># The mask for the third variable is [0,1,0,1,0,1,0,1] and so on.</span>
+        <span class="n">variable_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">num_nodes</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">num_nodes</span><span class="o">-</span><span class="n">var_index</span><span class="p">)))</span> <span class="o">//</span> <span class="n">step_size</span>
+        
+        <span class="c1"># Check if the Boolean function output changes when the variable is flipped</span>
+        <span class="n">depends_on_variable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">function</span><span class="p">[</span><span class="n">variable_mask</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">function</span><span class="p">[</span><span class="n">variable_mask</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">depends_on_variable</span><span class="p">:</span>
+            <span class="n">essential_vars</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_index</span><span class="p">)</span>
+            
+    <span class="k">return</span> <span class="p">[</span><span class="n">regulators</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">essential_vars</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="is_degenerated">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.is_degenerated">[docs]</a>
+<span class="k">def</span> <span class="nf">is_degenerated</span><span class="p">(</span><span class="n">function</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if a Boolean function is degenerated (does not depend on at least one variable).</span>
+<span class="sd">    We check this by verifying if the function depends on each variable.</span>
+<span class="sd">    In particular, we check if the function changes its output when the variable is flipped.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        function (list or np.array): </span>
+<span class="sd">            Boolean function represented as a list or numpy array.</span>
+<span class="sd">            The function is represented as a vector of 2^n elements, where n is the number of variables.</span>
+<span class="sd">            The function at index i is the output of the function for the binary representation of i.</span>
+
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        bool: </span>
+<span class="sd">            True if the function is degenerated, False otherwise.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; is_degenerated(np.array([0, 1, 1, 0]))</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; is_degenerated(np.array([0, 1, 1, 1]))</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt; is_degenerated(np.array([1, 1, 1, 1]))</span>
+<span class="sd">        True</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">num_nodes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">function</span><span class="p">)))</span>
+
+    <span class="c1"># Loop over each variable index to see if the function depends on it</span>
+
+    <span class="k">for</span> <span class="n">var_index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_nodes</span><span class="p">):</span>
+        <span class="c1"># Compute the step size for the current variable index</span>
+        <span class="n">step_size</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">num_nodes</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">var_index</span><span class="p">)</span>
+        
+        <span class="c1"># Create a mask to identify which entries depend on the current variable</span>
+        <span class="c1"># If n=3, the mask for the first variable is [0,0,0,0,1,1,1,1]. </span>
+        <span class="c1"># The mask for the second variable is [0,0,1,1,0,0,1,1]. </span>
+        <span class="c1"># The mask for the third variable is [0,1,0,1,0,1,0,1] and so on.</span>
+        <span class="c1"># If the Boolean function does not depend on the current variable, return True</span>
+        <span class="n">variable_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">num_nodes</span><span class="p">)</span> <span class="o">%</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">num_nodes</span><span class="o">-</span><span class="n">var_index</span><span class="p">)))</span> <span class="o">//</span> <span class="n">step_size</span>
+        
+        <span class="c1"># Check if the Boolean function depends on the current variable</span>
+        <span class="n">depends_on_variable</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">function</span><span class="p">[</span><span class="n">variable_mask</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">function</span><span class="p">[</span><span class="n">variable_mask</span> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span>
+        
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">depends_on_variable</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+
+            
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="num_attractors">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.num_attractors">[docs]</a>
+<span class="k">def</span> <span class="nf">num_attractors</span><span class="p">(</span><span class="n">boolean_network</span><span class="p">,</span> <span class="n">max_steps</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">num_simulations</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">initial_sample_points</span><span class="o">=</span><span class="p">[],</span> <span class="n">state_transition_graph</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">exact</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">output_file</span><span class="o">=</span><span class="s2">&quot;output.txt&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculate the number of attractors in a Boolean network.</span>
+<span class="sd">    The algorithm uses a random sampling approach to identify attractors in the network.</span>
+<span class="sd">    In particular, we start with a random initial state and simulate the network until we reach either a known attractor basin or a new attractor state.</span>
+<span class="sd">    We repeat this process for a number of simulations to identify all attractors in the network.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        boolean_network (class boolean network): </span>
+<span class="sd">            Boolean network represented as a list or numpy array.</span>
+<span class="sd">            The network is represented as a vector of 2^n elements, where n is the number of variables.</span>
+<span class="sd">            The network at index i is the output of the network for the binary representation of i.</span>
+<span class="sd">        max_steps (int, optional): </span>
+<span class="sd">            The maximum number of steps to simulate the network. Default is 1000.</span>
+<span class="sd">        num_simulations (int, optional): </span>
+<span class="sd">            The number of simulations to run. Default is 100.</span>
+<span class="sd">        initial_sample_points (list, optional): </span>
+<span class="sd">            A list of initial sample points to start the simulations from. If not provided, points will be chosen randomly. Default is an empty list.</span>
+<span class="sd">        exact (bool, optional):</span>
+<span class="sd">            If True, the function will consider all possible initial states. Default is True.</span>
+<span class="sd">        state_transition_graph (bool, optional):</span>
+<span class="sd">            If True, the function will output the state transition graph. Default is False.</span>
+<span class="sd">        output_file (str, optional):</span>
+<span class="sd">            The name of the output file to save the state transition graph. Default is &quot;output.txt&quot;.</span>
+<span class="sd">        </span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        attractors (list):</span>
+<span class="sd">            A list of attractors in the network. Each attractor is a list of states.</span>
+<span class="sd">        basin_sizes (list):</span>
+<span class="sd">            A list of basin sizes for each attractor.</span>
+<span class="sd">        attr_dict (dict):   </span>
+<span class="sd">            A dictionary mapping each state to its corresponding attractor index.</span>
+<span class="sd">        update_dict (dict):</span>
+<span class="sd">            A dictionary mapping each state to its next state.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; attractors,  basin_sizes,  attr_dict, update_dict = num_attractors(</span>
+<span class="sd">        rn.boolnet(5, seed=9), initial_sample_points=[i for i in range(25)])</span>
+<span class="sd">        &gt;&gt;&gt; # Print the results</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;Attractors: {attractors}&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;Number of attractors: {len(attractors)}&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;Basin sizes: {basin_sizes}&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;Number of indices considered: {len(attr_dict)}&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;Attractor index dict: {attr_dict}&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(f&quot;Update dict: {update_dict}&quot;)</span>
+<span class="sd">        Attractors: [[11, 22], [27, 30, 15, 21]]</span>
+<span class="sd">        Number of attractors: 2</span>
+<span class="sd">        Basin sizes: [7, 20]</span>
+<span class="sd">        Number of attractor index dict entries: 27</span>
+<span class="sd">        Attractor index dict: {0: 0, 11: 0, 22: 0, 1: 1, 19: 1, 27: 1, 30: 1, 15: 1, 21: 1, 2: 1, 3: 1, 4: 1, 5: 1, 17: 1, 6: 1, 7: 1, 8: 1, 14: 1, 9: 0, 18: 0, 10: 1, 12: 1, 13: 1, 16: 0, 20: 0, 23: 1, 24: 1}</span>
+<span class="sd">        Update dict: {0: 11, 11: 22, 22: 11, 1: 19, 19: 27, 27: 30, 30: 15, 15: 21, 21: 27, 2: 3, 3: 19, 4: 1, 5: 17, 17: 19, 6: 1, 7: 17, 8: 14, 14: 5, 9: 18, 18: 11, 10: 6, 12: 5, 13: 17, 16: 11, 20: 11, 23: 19, 24: 14}</span>
+<span class="sd">        </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">boolean_network</span><span class="p">,</span> <span class="n">BooleanNet</span><span class="p">):</span>
+        <span class="c1"># Identify the format of the input network</span>
+        <span class="k">if</span> <span class="n">boolean_network</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+                        
+            <span class="n">num_nodes</span> <span class="o">=</span> <span class="n">boolean_network</span><span class="o">.</span><span class="n">num_nodes</span>
+            
+            <span class="c1"># Initialize dictionaries and lists for tracking attractors and basin sizes</span>
+            
+            <span class="n">attractors</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">basin_sizes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">attractor_index_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">update_dict</span> <span class="o">=</span> <span class="p">{}</span>
+            
+            <span class="n">queue</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="n">initial_sample_points</span><span class="p">:</span>
+                <span class="n">num_simulations</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">initial_sample_points</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">exact</span><span class="p">:</span>
+                <span class="n">initial_sample_points</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">num_nodes</span><span class="p">)]</span>
+            <span class="c1"># Sample initial points and update the network state</span>
+            <span class="c1"># We use two variables to track the state vector</span>
+            <span class="c1"># state_vector: The current state of the network as a list of binary values</span>
+            <span class="c1"># state_dec: The current state of the network as a decimal value. For example, [1, 0, 1] would be 5.</span>
+            <span class="c1"># The reason for this redundancy is two fold:</span>
+            <span class="c1"># The binary format is needed to update the state vector</span>
+            <span class="c1"># The decimal format allows us to efficiently store the state transition graph and the attractor index dictionary</span>
+            
+            <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_simulations</span><span class="p">):</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+    
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">initial_sample_points</span><span class="p">:</span>
+                    <span class="c1"># Randomly initialize the state vector if no initial points are provided</span>
+                    <span class="n">state_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">num_nodes</span><span class="p">)</span>
+                    <span class="n">state_dec</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">bin2dec</span><span class="p">(</span><span class="n">state_vector</span><span class="p">)</span>
+                    
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># Use provided initial sample points</span>
+                    <span class="n">state_dec</span> <span class="o">=</span> <span class="n">initial_sample_points</span><span class="p">[</span><span class="n">step</span><span class="p">]</span>
+                    <span class="n">state_vector</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">dec2bin</span><span class="p">(</span><span class="n">state_dec</span><span class="p">,</span> <span class="n">num_nodes</span><span class="p">)</span>
+                
+                <span class="c1"># Initialize the queue with the current state</span>
+                <span class="c1"># The queue is used to track the state vector till we reach an attractor basin or a new attractor</span>
+                <span class="c1"># We use decimal values to save space</span>
+                <span class="n">queue</span> <span class="o">=</span> <span class="p">[</span><span class="n">state_dec</span><span class="p">]</span>
+                
+                <span class="c1"># Check if the current state is part of a known attractor basin</span>
+                <span class="c1"># If not, continue the search till we reach an attractor basin or a new attractor</span>
+                <span class="c1"># Else we ignore that state and move to the next state</span>
+                
+                
+                <span class="k">if</span> <span class="n">state_dec</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">attractor_index_dict</span><span class="p">:</span>
+                    <span class="c1"># Update the state vector till we reach an attractor basin or a new attractor</span>
+                    <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_steps</span><span class="p">:</span>
+                        <span class="c1"># Update the state vector using the boolean network</span>
+                        <span class="n">next_state_vector</span> <span class="o">=</span> <span class="n">boolean_network</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state_vector</span><span class="p">)</span>
+                        <span class="n">next_state_dec</span> <span class="o">=</span> <span class="n">ut</span><span class="o">.</span><span class="n">bin2dec</span><span class="p">(</span><span class="n">next_state_vector</span><span class="p">)</span>
+                        
+                        <span class="c1"># Optionally update the state transition graph</span>
+                        <span class="k">if</span> <span class="n">state_dec</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">update_dict</span><span class="p">:</span>
+                            <span class="n">update_dict</span><span class="p">[</span><span class="n">state_dec</span><span class="p">]</span> <span class="o">=</span> <span class="n">next_state_dec</span>
+                        
+                        <span class="n">state_vector</span> <span class="o">=</span> <span class="n">next_state_vector</span>
+                        
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="c1"># Check if the current state is part of a known attractor basin</span>
+                            
+                            <span class="n">attractor_index</span> <span class="o">=</span> <span class="n">attractor_index_dict</span><span class="p">[</span><span class="n">next_state_dec</span><span class="p">]</span>
+                            
+                            
+                            <span class="c1"># All elements in the queue are part of the same attractor</span>
+                            <span class="c1"># Update attractor index dictionary for all states in the queue</span>
+                            <span class="n">basin_sizes</span><span class="p">[</span><span class="n">attractor_index</span><span class="p">]</span> <span class="o">+=</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">)</span>
+                            <span class="n">attractor_index_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="p">[</span><span class="n">attractor_index</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">))))</span>
+                            <span class="k">break</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="k">try</span><span class="p">:</span>
+                                <span class="c1"># Check if the current state is part of a new attractor</span>
+                                <span class="n">attractor_start_index</span> <span class="o">=</span> <span class="n">queue</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">next_state_dec</span><span class="p">)</span>
+                                
+                                <span class="c1"># New attractor identified</span>
+                                <span class="c1"># Update attractor index dictionary for all states in the queue</span>
+                                <span class="n">attractor_index_dict</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">queue</span><span class="p">,</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">attractors</span><span class="p">)]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">))))</span>
+                                <span class="n">attractors</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">queue</span><span class="p">[</span><span class="n">attractor_start_index</span><span class="p">:])</span>
+                                <span class="n">basin_sizes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">queue</span><span class="p">))</span>
+                                <span class="k">break</span>
+                            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                                <span class="c1"># Continue the search if no attractor is found</span>
+                                <span class="k">pass</span>
+                        
+                        <span class="n">queue</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_state_dec</span><span class="p">)</span>
+                        <span class="n">state_dec</span> <span class="o">=</span> <span class="n">next_state_dec</span>
+
+            <span class="c1"># Save the state transition graph if required</span>
+            <span class="k">if</span> <span class="n">state_transition_graph</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                    <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">update_dict</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+            <span class="c1"># Return the results</span>
+            <span class="k">return</span> <span class="n">attractors</span><span class="p">,</span> <span class="n">basin_sizes</span><span class="p">,</span> <span class="n">attractor_index_dict</span><span class="p">,</span> <span class="n">update_dict</span>
+
+
+
+        
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># If the boolean network is not of type list or numpy array, raise an error</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type for boolean_network. Expected list or numpy array.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mi">1</span></div>
+
+
+
+<div class="viewcode-block" id="canalizing_variables">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.canalizing_variables">[docs]</a>
+<span class="k">def</span> <span class="nf">canalizing_variables</span><span class="p">(</span><span class="n">boolean_func</span><span class="p">,</span> <span class="n">variables</span><span class="o">=</span><span class="p">[]):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Determines if a Boolean function is canalizing.</span>
+<span class="sd">    </span>
+<span class="sd">    A Boolean function f(x_1,...,x_n) is canalizing if it is canalizing in at least one variable.</span>
+<span class="sd">    A Boolean function f(x_1,...,x_n) is canalizing in x_i if fixing x_i to a specific value (0 or 1) </span>
+<span class="sd">    results in a constant function value for all other variables.</span>
+
+<span class="sd">    Input:</span>
+<span class="sd">        boolean_func: A Boolean function represented as a vector. This is the output of the truth table </span>
+<span class="sd">                      (a list or array of length 2^n, where n is the number of input variables).</span>
+<span class="sd">        num_vars (optional): The number of variables in the Boolean function. If not provided, it is </span>
+<span class="sd">                             inferred from the length of `boolean_func`.</span>
+
+<span class="sd">    Output:</span>
+<span class="sd">        True if the Boolean function is canalizing, False otherwise.</span>
+
+<span class="sd">    ..note:: The function has serious issues with the current implementation. It is not working as expected.</span>
+
+<span class="sd">    Examples:</span>
+
+<span class="sd">        &gt;&gt;&gt;is_canalizing([1, 0, 0, 1])</span>
+<span class="sd">        False</span>
+<span class="sd">        &gt;&gt;&gt;is_canalizing([1, 1, 1, 1])</span>
+<span class="sd">        True</span>
+<span class="sd">        &gt;&gt;&gt;is_canalizing([1, 0, 1, 1, 1, 0, 1, 1])</span>
+<span class="sd">        True</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    
+    <span class="c1"># Convert boolean_func to a numpy array if it is a list</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">boolean_func</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+        <span class="n">boolean_func</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">boolean_func</span><span class="p">)</span>
+        
+    <span class="c1"># Calculate the number of variables if not provided</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">num_vars</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log2</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">boolean_func</span><span class="p">)))</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_vars</span><span class="p">)]</span>
+    <span class="c1"># Compute half of the length of the boolean function vector (2^(num_vars-1))</span>
+    <span class="n">half_length</span> <span class="o">=</span> <span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">num_vars</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+    
+    <span class="c1"># Generate all possible input combinations for `num_vars` variables</span>
+    <span class="n">input_combinations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">repeat</span><span class="o">=</span><span class="n">num_vars</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+    
+    <span class="c1"># Compute the complement of each input combination (i.e., 1 - x_i)</span>
+    <span class="n">complement_combinations</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">input_combinations</span>
+    
+    <span class="c1"># Stack the input combinations and their complements vertically</span>
+    <span class="c1"># For n=2, the stacked_combinations matrix will look like:</span>
+    <span class="c1"># [[0 0 1 1]</span>
+    <span class="c1">#  [0 1 0 1]]  # Input combinations</span>
+
+    <span class="c1"># [[1 1 0 0]</span>
+    <span class="c1">#  [1 0 1 0]]   # Complement combinations</span>
+    <span class="c1"># The stacked_combinations matrix has 2*n rows and 2^n columns</span>
+    <span class="c1"># [[0 0 1 1]</span>
+    <span class="c1">#  [0 1 0 1]</span>
+    <span class="c1">#  [1 1 0 0]</span>
+    <span class="c1">#  [1 0 1 0]]</span>
+    <span class="n">stacked_combinations</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">input_combinations</span><span class="p">,</span> <span class="n">complement_combinations</span><span class="p">))</span>
+    
+    <span class="c1"># Calculate the dot product of the stacked combinations matrix with the boolean function</span>
+    <span class="c1"># This gives us the values of the function when each variable is fixed to 0 or 1</span>
+    <span class="n">result_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">stacked_combinations</span><span class="p">,</span> <span class="n">boolean_func</span><span class="p">)</span>
+    
+    
+    <span class="c1"># Check if the function is canalizing by looking for any result that equals half_length or 0</span>
+    <span class="n">canalizing_vars</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_vars</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">result_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">half_length</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">result_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1">#append the canalizing variable to the list with the canalizing input</span>
+            <span class="n">canalizing_vars</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">num_vars</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_vars</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">num_vars</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">result_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">half_length</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">result_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1">#append the canalizing variable to the list with the canalizing input</span>
+            <span class="n">canalizing_vars</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="mi">2</span><span class="o">*</span><span class="n">num_vars</span><span class="o">-</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+            
+    <span class="c1"># if np.any(result_matrix == half_length) or np.any(result_matrix == 0):</span>
+    <span class="c1">#     return True</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">variables</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">j</span> <span class="ow">in</span> <span class="n">canalizing_vars</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="cubical_homology_poset">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.cubical_homology_poset">[docs]</a>
+<span class="k">def</span> <span class="nf">cubical_homology_poset</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span><span class="n">edges</span><span class="p">,</span><span class="n">simplex_dim</span><span class="p">,</span><span class="n">codimension</span><span class="p">,</span><span class="n">cubical_homology_dim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function calculates the cubical homology of a graph given the vertices and edges of the graph.</span>
+<span class="sd">    This requires Julia to be installed and the JULIA environment variable to be set to True.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        vertices (list): </span>
+<span class="sd">            List of vertices in the graph.</span>
+<span class="sd">        edges (list): </span>
+<span class="sd">            List of edges in the graph.</span>
+<span class="sd">        simplex_dim (int): </span>
+<span class="sd">            The dimension of the simplices we are considering</span>
+<span class="sd">        codimension (int): </span>
+<span class="sd">            The codimension of the simplices that are shared by the simplices.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        int: </span>
+<span class="sd">            The betti number of the graph.</span>
+
+<span class="sd">    Examples:   </span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; vertices = [0,1,2,3,4,5,6,7]</span>
+<span class="sd">        &gt;&gt;&gt; edges = [(0,1),(1,2),(2,3),(3,4),(4,0),(5,0),(5,1),(6,1),(6,2),(7,2),(7,3),(7,4),(7,5),(7,6)]</span>
+<span class="sd">        &gt;&gt;&gt; cubical_homology_poset(vertices,edges,2,0)</span>
+<span class="sd">        1</span>
+<span class="sd">    ..note:: </span>
+<span class="sd">        If the graph has cycles then the function will throw StackOverflowError.</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+    <span class="n">vertices_jl</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">Array</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+    <span class="n">edges_jl</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">Array</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">edges_jl</span><span class="o">=</span><span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">make_transitive</span><span class="p">(</span><span class="n">edges_jl</span><span class="p">)</span>
+    <span class="n">poset</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">create_poset</span><span class="p">(</span><span class="n">vertices_jl</span><span class="p">,</span><span class="n">edges_jl</span><span class="p">)</span>
+    
+
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">poset_to_graph</span><span class="p">(</span><span class="n">poset</span><span class="p">,</span><span class="n">simplex_dim</span><span class="p">,</span><span class="n">codimension</span><span class="p">)</span> 
+    <span class="c1">#log.write(f&quot;Preprocessing the graph  with {len(graph.vertices)} vertices and {len(graph.edges)} edges&quot;)</span>
+
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">relabel_vertices</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="n">post_graph</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">preprocess_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="c1">#log.write(f&quot;Calculating cubical homology in dimension {cubical_homology_dim} for graph with {len(graph.vertices)} vertices and {len(graph.edges)} edges&quot;)</span>
+    <span class="k">return</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">cubicalHomology</span><span class="p">(</span><span class="n">post_graph</span><span class="p">,</span><span class="n">cubical_homology_dim</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="order_complex">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.order_complex">[docs]</a>
+<span class="k">def</span> <span class="nf">order_complex</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span><span class="n">edges</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function orders the simplicial complex given the vertices and edges of the graph.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        vertices (list): </span>
+<span class="sd">            List of vertices in the graph.</span>
+<span class="sd">        edges (list): </span>
+<span class="sd">            List of edges in the graph.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        Julia list: </span>
+<span class="sd">            The simplicial complex ordered by dimension.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; vertices = [0,1,2,3,4,5,6,7]</span>
+<span class="sd">        &gt;&gt;&gt; edges = [(0,1),(1,2),(2,3),(3,4),(4,0),(5,0),(5,1),(6,1),(6,2),(7,2),(7,3),(7,4),(7,5),(7,6)]</span>
+<span class="sd">        &gt;&gt;&gt; order_complex(vertices,edges)</span>
+<span class="sd">    </span>
+<span class="sd">    ..note::</span>
+<span class="sd">        The object will throw a StackOverflowError if the graph has cycles. Furthermore, the function will return a Julia object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">vertices_jl</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">Array</span><span class="p">(</span><span class="n">vertices</span><span class="p">)</span>
+    <span class="n">edges_jl</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">Array</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+    <span class="n">edges_jl</span><span class="o">=</span><span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">make_transitive</span><span class="p">(</span><span class="n">edges_jl</span><span class="p">)</span>
+    <span class="n">poset</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">create_poset</span><span class="p">(</span><span class="n">vertices_jl</span><span class="p">,</span><span class="n">edges_jl</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">poset_to_simplicial</span><span class="p">(</span><span class="n">poset</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="a_theory_simplicial">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.a_theory_simplicial">[docs]</a>
+<span class="k">def</span> <span class="nf">a_theory_simplicial</span><span class="p">(</span><span class="n">simplicial_complex</span><span class="p">,</span><span class="n">cubical_homology_dim</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function calculates the cubical homology of a simplicial complex.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        simplicial_complex (Julia list): </span>
+<span class="sd">            The simplicial complex.</span>
+<span class="sd">        cubical_homology_dim (int): </span>
+<span class="sd">            The dimension of the cubical homology to be computed.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        int: </span>
+<span class="sd">            The betti number of the simplicial complex.</span>
+<span class="sd">    </span>
+<span class="sd">    Examples:</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; simplicial_complex = [[0,1,2],[1,2,3],[2,3,4],[3,4,0],[4,0,1],[5,0,1],[5,1,2],[6,1,2],[6,2,3],[7,2,3],[7,3,4],[7,4,0],[7,5,0],[7,6,1]]</span>
+<span class="sd">        &gt;&gt;&gt; a_theory_simplicial(simplicial_complex,2)</span>
+<span class="sd">        1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">simplicial_to_graph</span><span class="p">(</span><span class="n">simplicial_complex</span><span class="p">)</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">relabel_vertices</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="n">post_graph</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">preprocess_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">graph</span><span class="p">,</span><span class="n">post_graph</span><span class="p">,</span><span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">cubicalHomology</span><span class="p">(</span><span class="n">post_graph</span><span class="p">,</span><span class="n">cubical_homology_dim</span><span class="p">)</span></div>
+
+    
+<div class="viewcode-block" id="simplicial_to_graph">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.simplicial_to_graph">[docs]</a>
+<span class="k">def</span> <span class="nf">simplicial_to_graph</span><span class="p">(</span><span class="n">simplicial_complex</span><span class="p">,</span><span class="n">simplex_dim</span><span class="p">,</span><span class="n">codimension</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This function converts a simplicial complex to a graph.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        simplicial_complex (Julia list): </span>
+<span class="sd">            The simplicial complex.</span>
+<span class="sd">        simplex_dim (int): </span>
+<span class="sd">            The dimension of the simplices we are considering</span>
+<span class="sd">        codimension (int): </span>
+<span class="sd">            The codimension of the simplices that are shared by the simplices.</span>
+<span class="sd">    </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        Julia list: </span>
+<span class="sd">            The graph.</span>
+
+<span class="sd">    Examples:</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; simplicial_complex = [[0,1,2],[1,2,3],[2,3,4],[3,4,0],[4,0,1],[5,0,1],[5,1,2],[6,1,2],[6,2,3],[7,2,3],[7,3,4],[7,4,0],[7,5,0],[7,6,1]]</span>
+<span class="sd">        &gt;&gt;&gt; simplicial_to_graph(simplicial_complex,2,1)</span>
+<span class="sd">    </span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log</span> <span class="o">=</span> <span class="n">logger</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">simplicial_to_graph</span><span class="p">(</span><span class="n">simplicial_complex</span><span class="p">,</span><span class="n">simplex_dim</span><span class="p">,</span><span class="n">codimension</span><span class="p">)</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">relabel_vertices</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Preprocessing the graph  with </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">vertices</span><span class="p">)</span><span class="si">}</span><span class="s2"> vertices and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">edges</span><span class="p">)</span><span class="si">}</span><span class="s2"> edges&quot;</span><span class="p">)</span>
+    <span class="n">graph</span> <span class="o">=</span> <span class="n">jl</span><span class="o">.</span><span class="n">cubicalhomology</span><span class="o">.</span><span class="n">preprocess_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">graph</span></div>
+
+
+<div class="viewcode-block" id="wiring_diagram">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.wiring_diagram">[docs]</a>
+<span class="k">def</span> <span class="nf">wiring_diagram</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        network (BooleanNet): </span>
+<span class="sd">            A Boolean network object.</span>
+<span class="sd">        </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        list: </span>
+<span class="sd">            The wiring diagram</span>
+
+<span class="sd">    Examples:   </span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; num_nodes = 5</span>
+<span class="sd">        &gt;&gt;&gt; wiring_diagram_list= [(i,i+1) for i in range(num_nodes-1)]+ [(num_nodes//2,0)] + [(num_nodes-1,num_nodes//2)]</span>
+<span class="sd">        &gt;&gt;&gt; print(wiring_diagram_list)</span>
+<span class="sd">        [(0, 1), (1, 2), (2, 3), (3, 4), (2, 0), (4, 2)]</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; boolean_network = rn.boolnet(num_nodes=num_nodes,seed = 0, edges_wiring_diagram = wiring_diagram_list)   </span>
+<span class="sd">        &gt;&gt;&gt; print(wiring_diagram(boolean_network))</span>
+<span class="sd">        [(2, 0), (0, 1), (1, 2), (4, 2), (2, 3), (3, 4)]</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+        <span class="n">wiring_diagram</span> <span class="o">=</span> <span class="p">[(</span><span class="n">network</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">regulator</span><span class="p">),</span><span class="n">i</span><span class="p">)</span>  <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">regulators</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span> <span class="k">for</span> <span class="n">regulator</span> <span class="ow">in</span> <span class="n">regulators</span><span class="p">]</span>
+
+
+    <span class="k">if</span> <span class="n">network</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+        <span class="n">wiring_diagram</span> <span class="o">=</span> <span class="p">[(</span><span class="n">regulator</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">regulators</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span> <span class="k">for</span> <span class="n">regulator</span> <span class="ow">in</span> <span class="n">regulators</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">wiring_diagram</span></div>
+
+<div class="viewcode-block" id="strongly_connected_components">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.strongly_connected_components">[docs]</a>
+<span class="k">def</span> <span class="nf">strongly_connected_components</span><span class="p">(</span><span class="n">wiring_diagram</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the DAG of strongly connected components of a wiring diagram.</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        wiring_diagram (list): </span>
+<span class="sd">            The wiring diagram of the network.</span>
+<span class="sd">            </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        compoents (list): </span>
+<span class="sd">            The DAG of strongly connected components.</span>
+<span class="sd">        DAG (list): </span>
+<span class="sd">            The DAG of strongly connected components.</span>
+<span class="sd">    Examples:</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; wiring_diagram = [(1, 0), (0, 1), (0, 2)]</span>
+<span class="sd">        &gt;&gt;&gt; nodes,edges = strongly_connected_components(wiring_diagram)</span>
+<span class="sd">        &gt;&gt;&gt; print(nodes)</span>
+<span class="sd">        [(0, {&#39;members&#39;: {2}}), (1, {&#39;members&#39;: {0, 1}})]</span>
+<span class="sd">        &gt;&gt;&gt; print(edges)</span>
+<span class="sd">        [(1, 0)]</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+
+    <span class="c1"># Create a directed graph</span>
+    <span class="n">G</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">DiGraph</span><span class="p">()</span>
+
+    <span class="c1"># Add edges to the graph (example graph)</span>
+    <span class="n">G</span><span class="o">.</span><span class="n">add_edges_from</span><span class="p">(</span><span class="n">wiring_diagram</span><span class="p">)</span>
+    
+    <span class="n">directed_acyclic_graph</span> <span class="o">=</span> <span class="n">nx</span><span class="o">.</span><span class="n">condensation</span><span class="p">(</span><span class="n">G</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="n">directed_acyclic_graph</span><span class="o">.</span><span class="n">nodes</span><span class="o">.</span><span class="n">data</span><span class="p">(),</span><span class="n">directed_acyclic_graph</span><span class="o">.</span><span class="n">edges</span></div>
+
+<div class="viewcode-block" id="network_scc">
+<a class="viewcode-back" href="../../functions.html#booleantools.bn_tools.network_scc">[docs]</a>
+<span class="k">def</span> <span class="nf">network_scc</span><span class="p">(</span><span class="n">network</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the DAG of strongly connected components of a network</span>
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------</span>
+<span class="sd">        network (list): </span>
+<span class="sd">            A Boolean Network.</span>
+<span class="sd">            </span>
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        components (list): </span>
+<span class="sd">            The DAG of strongly connected components.</span>
+<span class="sd">        DAG (list): </span>
+<span class="sd">            The DAG of strongly connected components.</span>
+<span class="sd">    Examples:</span>
+<span class="sd">    --------</span>
+<span class="sd">        &gt;&gt;&gt; wiring_diagram = [(1, 0), (0, 1), (0, 2)]</span>
+<span class="sd">        &gt;&gt;&gt; boolean_network = rn.boolnet(num_nodes=3,seed = 0, edges_wiring_diagram = wiring_diagram_list)</span>
+<span class="sd">        &gt;&gt;&gt; nodes,edges = network_scc(boolean_network)</span>
+<span class="sd">        &gt;&gt;&gt; print(nodes)</span>
+<span class="sd">        [(0, {&#39;members&#39;: {2}}), (1, {&#39;members&#39;: {0, 1}})]</span>
+<span class="sd">        &gt;&gt;&gt; print(edges)</span>
+<span class="sd">        [(1, 0)]</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">strongly_connected_components</span><span class="p">(</span><span class="n">wiring_diagram</span><span class="p">(</span><span class="n">network</span><span class="p">))</span></div>
+
+
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Usage examples</span>
+    <span class="c1"># Essential variables</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">essential_variables</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">]))</span>
+    <span class="c1"># &gt;&gt;&gt; [&#39;A&#39;, &#39;B&#39;]</span>
+    <span class="c1"># Degenerated function</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">is_degenerated</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])))</span>
+    <span class="c1"># &gt;&gt;&gt; True</span>
+    <span class="n">attractors</span><span class="p">,</span>  <span class="n">basin_sizes</span><span class="p">,</span>  <span class="n">attr_dict</span><span class="p">,</span> <span class="n">update_dict</span> <span class="o">=</span> <span class="n">num_attractors</span><span class="p">(</span>
+        <span class="n">rn</span><span class="o">.</span><span class="n">boolnet</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">9</span><span class="p">),</span> <span class="n">initial_sample_points</span><span class="o">=</span><span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">)])</span>
+    <span class="c1"># Print the results</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attractors: </span><span class="si">{</span><span class="n">attractors</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of attractors: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">attractors</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Basin sizes: </span><span class="si">{</span><span class="n">basin_sizes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of indices considered: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attractor index dict: </span><span class="si">{</span><span class="n">attr_dict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Update dict: </span><span class="si">{</span><span class="n">update_dict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; Attractors: [[11, 22], [27, 30, 15, 21]]</span>
+    <span class="c1"># &gt;&gt;&gt; Number of attractors: 2</span>
+    <span class="c1"># &gt;&gt;&gt; Basin sizes: [7, 20]</span>
+    <span class="c1"># &gt;&gt;&gt; Number of attractor index dict entries: 27</span>
+    <span class="c1"># &gt;&gt;&gt; Attractor index dict: {0: 0, 11: 0, 22: 0, 1: 1, 19: 1, 27: 1, 30: 1, 15: 1, 21: 1, 2: 1, 3: 1, 4: 1, 5: 1, 17: 1, 6: 1, 7: 1, 8: 1, 14: 1, 9: 0, 18: 0, 10: 1, 12: 1, 13: 1, 16: 0, 20: 0, 23: 1, 24: 1}</span>
+    <span class="c1"># &gt;&gt;&gt; Update dict: {0: 11, 11: 22, 22: 11, 1: 19, 19: 27, 27: 30, 30: 15, 15: 21, 21: 27, 2: 3, 3: 19, 4: 1, 5: 17, 17: 19, 6: 1, 7: 17, 8: 14, 14: 5, 9: 18, 18: 11, 10: 6, 12: 5, 13: 17, 16: 11, 20: 11, 23: 19, 24: 14}</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">canalizing_variables</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+    <span class="c1"># &gt;&gt;&gt; </span>
+    <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Press Enter to continue...&quot;</span><span class="p">)</span>
+    <span class="c1"># Generate attractors and related data</span>
+    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+    <span class="c1"># attractors,  basin_sizes,  attr_dict, update_dict = num_attractors(</span>
+    <span class="c1">#     rn.boolnet(20, seed=9), initial_sample_points=[i for i in range(2**20)], state_transition_graph=True, output_file=&quot;output.txt&quot;</span>
+    <span class="c1"># )</span>
+    <span class="c1"># stop_time = time.time()</span>
+    <span class="c1"># print(f&quot;Time taken: {stop_time-start_time}&quot;)</span>
+    <span class="c1"># # Print the results</span>
+    <span class="c1"># print(f&quot;Attractors: {attractors}&quot;)</span>
+    <span class="c1"># print(f&quot;Number of attractors: {len(attractors)}&quot;)</span>
+    <span class="c1"># print(f&quot;Basin sizes: {basin_sizes}&quot;)</span>
+    <span class="c1"># print(f&quot;Number of indices considered: {len(attr_dict)}&quot;)</span>
+    <span class="c1"># Code to test GPU implementation</span>
+    <span class="c1">#attractors,  basin_sizes,  attr_dict, update_dict = num_attractors_gpu(rn.boolnet(10, seed=9), initial_sample_points=[i for i in range(1526)])</span>
+    <span class="c1">#print(is_canalizing([1, 0, 1, 1, 1, 0, 1, 1]))</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="n">essential_variables</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">essential_variables</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">essential_variables</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]))</span>
+    
+    <span class="c1"># add_numbers = Main.eval(&#39;add_numbers&#39;)</span>
+    <span class="c1"># # Call specific Julia functions</span>
+    <span class="c1"># result_add = Main.add_numbers(3,5)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Testing A-theory functions&quot;</span><span class="p">)</span>
+    <span class="c1"># s = jl.eval(&quot;SparseVector(10, [1, 3, 7], [1.0, -2.0, 3.0])&quot;)</span>
+
+    <span class="c1"># # Retrieve the sparse vector &#39;s&#39; from Julia</span>
+    
+    <span class="c1"># print(s)</span>
+    <span class="c1"># result = jl.cubicalhomology.nCube(3)</span>
+    <span class="c1"># print(result)</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># result = jl.cubicalhomology.hyperOctahedrial(3)</span>
+    <span class="c1"># print(result)</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># print(jl.cubicalhomology.generate_reversals(3))</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># print(jl.cubicalhomology.add_numbers(3,5))</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># print(jl.cubicalhomology.permutations([i for i in range(3)]))</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># print(jl.cubicalhomology.sign_of_permutation([1,2,0]))</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># for g in jl.cubicalhomology.hyperOctahedrial(3):</span>
+    <span class="c1">#     print(jl.cubicalhomology.calculateImageCube(jl.cubicalhomology.nCube(3),g))</span>
+    <span class="c1"># #print(jl.cubicalhomology.permuteCoords(vertex, gpElet))</span>
+    <span class="c1"># v=[0,1,2,3,4, # regular C5 vertices</span>
+    <span class="c1"># 5,6,7,8,9] # extra vertices</span>
+    <span class="c1"># e = [(0,1),(1,2),(2,3),(3,4),(4,0), # regular edges</span>
+    <span class="c1">#     (5,0),(5,1),(6,1),(6,2),(7,2),(7,3),(8,3),(8,4),(9,4),(9,0)] # extra edges </span>
+
+    <span class="c1"># e = jl.cubicalhomology.makeSymmetricReflexive(e)</span>
+    <span class="c1"># C5_star = jl.cubicalhomology.graph(v,e)</span>
+    <span class="c1"># C5_star = jl.cubicalhomology.relabel_vertices(C5_star)</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># print(C5_star)</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># print(jl.cubicalhomology.cubicalHomology(jl.cubicalhomology.preprocess_graph(C5_star),1))</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># before_import = set(dir(jl))</span>
+    
+
+    <span class="c1"># # Define the Poset struct and create an instance within a Julia module</span>
+    
+    <span class="c1"># after_import = set(dir(jl))</span>
+    <span class="c1"># imported_items = after_import - before_import</span>
+    <span class="c1"># print(imported_items)</span>
+    <span class="c1"># print(jl.cubicalhomology.add_numbers(3,5))</span>
+    <span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+    <span class="n">relations</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">6</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="p">)]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">cubical_homology_poset</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span><span class="n">relations</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+    <span class="c1">#relations=jl.cubicalhomology.make_transitive(relations)</span>
+    <span class="c1">#print(jl.cubicalhomology.create_poset(vertices,relations))</span>
+
+    <span class="c1"># # Access the Poset instance from the Julia module</span>
+    <span class="c1"># # Use module name to access variables and functions defined in it</span>
+    <span class="c1"># poset_obj = jl.eval(&quot;MyModule.P&quot;)</span>
+
+    <span class="c1"># # Access fields of the Poset instance</span>
+    <span class="c1"># vertices = jl.eval(&quot;MyModule.P.vertices&quot;)</span>
+    <span class="c1"># relations = jl.eval(&quot;MyModule.P.relations&quot;)</span>
+
+    <span class="c1"># print(&quot;Vertices:&quot;, vertices)</span>
+    <span class="c1"># print(&quot;Relations:&quot;, relations)</span>
+
+
+    <span class="c1"># # Access fields of the Poset instance</span>
+    <span class="c1"># vertices = jl.eval(&quot;MyModule.P.vertices&quot;)</span>
+    <span class="c1"># relations = jl.eval(&quot;MyModule.P.relations&quot;)</span>
+
+    <span class="c1"># print(&quot;Vertices:&quot;, vertices)</span>
+    <span class="c1"># print(&quot;Relations:&quot;, relations)</span>
+    <span class="c1"># jl.eval(&quot;&quot;&quot;</span>
+    <span class="c1"># mutable struct Poset</span>
+    <span class="c1">#     vertices::Vector{Int}</span>
+    <span class="c1">#     relations::Vector{Tuple{Int, Int}}</span>
+    <span class="c1"># end</span>
+            
+    <span class="c1"># P = Poset([1, 2, 3, 4], [(1, 2), (2, 3)])</span>
+    <span class="c1"># &quot;&quot;&quot;)</span>
+    <span class="c1"># after_import = set(dir(jl))</span>
+    <span class="c1"># imported_items = after_import - before_import</span>
+    <span class="c1"># print(imported_items)</span>
+
+    <span class="c1"># # Define your data in Python</span>
+    <span class="c1"># vertices = [1, 2, 3, 4]</span>
+    <span class="c1"># relations = [(1, 2), (2, 3)]</span>
+
+    <span class="c1"># # Convert Python lists to Julia arrays</span>
+    <span class="c1"># vertices_jl = jl.eval(f&quot;Vector({vertices})&quot;)</span>
+    <span class="c1"># relations_jl = jl.eval(f&quot;Vector({relations})&quot;)</span>
+    <span class="c1"># print(vertices_jl)</span>
+    <span class="c1"># print(relations_jl)</span>
+    <span class="c1"># # Create the Poset object in Julia</span>
+    <span class="c1"># jl.eval(f&quot;poset_obj = Poset({vertices_jl}, {relations_jl})&quot;)</span>
+
+    <span class="c1"># poset_obj = jl.eval(&quot;poset_obj&quot;)</span>
+
+    <span class="c1"># # Print vertices and relations</span>
+    <span class="c1"># print(&quot;Vertices:&quot;, jl.eval(&quot;poset_obj.vertices&quot;))</span>
+    <span class="c1"># print(&quot;Relations:&quot;, jl.eval(&quot;poset_obj.relations&quot;))</span>
+
+
+    <span class="c1"># Now call the Julia function</span>
+    <span class="c1"># print(&quot;############################################&quot;)</span>
+    <span class="c1"># poset = jl.cubicalhomology.create_poset(vertices,relations)</span>
+    <span class="c1"># print(poset)</span>
+    <span class="c1"># #print(jl.cubicalhomology.poset_to_simplicial(jl.cubicalhomology.create_poset(vertices,relations)))</span>
+    <span class="c1"># simplicial = jl.cubicalhomology.poset_to_graph(poset,2,0)</span>
+    <span class="c1"># simplicial = jl.cubicalhomology.relabel_vertices(simplicial)</span>
+    <span class="c1"># simplicial = jl.cubicalhomology.preprocess_graph(simplicial)</span>
+    <span class="c1"># # graph = jl.cubicalhomology.simplicial_to_graph(simplicial,2,1)</span>
+    <span class="c1"># # graph = jl.cubicalhomology.relabel_vertices(graph)</span>
+    <span class="c1"># # print(jl.cubicalhomology.cubicalHomology(jl.cubicalhomology.preprocess_graph(graph),1))</span>
+    <span class="c1"># print(jl.cubicalhomology.cubicalHomology(simplicial,1))</span>
+    <span class="n">num_nodes</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="n">wiring_diagram_list</span><span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_nodes</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span><span class="o">+</span> <span class="p">[(</span><span class="n">num_nodes</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[(</span><span class="n">num_nodes</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">num_nodes</span><span class="o">//</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">wiring_diagram_list</span><span class="p">)</span>
+    <span class="n">wiring_diagram_list</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">)]</span>
+    <span class="n">boolean_network</span> <span class="o">=</span> <span class="n">rn</span><span class="o">.</span><span class="n">boolnet</span><span class="p">(</span><span class="n">num_nodes</span><span class="o">=</span><span class="n">num_nodes</span><span class="p">,</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">edges_wiring_diagram</span> <span class="o">=</span> <span class="n">wiring_diagram_list</span><span class="p">)</span>
+    <span class="n">input_data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A and B&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;not A or C&quot;</span><span class="p">)</span>
+        <span class="p">]</span>
+
+    <span class="n">net1</span><span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;text-format&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net1</span><span class="o">.</span><span class="n">input_type</span><span class="p">)</span>
+    <span class="n">net1</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">wiring_diagram</span><span class="p">(</span><span class="n">boolean_network</span><span class="p">))</span>
+    <span class="n">nodes</span><span class="p">,</span><span class="n">edges</span> <span class="o">=</span> <span class="n">strongly_connected_components</span><span class="p">(</span><span class="n">wiring_diagram_list</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">wiring_diagram</span><span class="p">(</span><span class="n">net1</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">network_scc</span><span class="p">(</span><span class="n">boolean_network</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">network_scc</span><span class="p">(</span><span class="n">net1</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright Copyright (c) 2024, VENKATA SAI NARAYANA BAVISETTY.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Package Overview</title>
+    
+          <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="_static/theme-vendors.js"></script> -->
+      <script src="_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="prev" title="Boolean Network Representations" href="representing_boolean_networks.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="index.html" class="home-link">
+    
+      <span class="site-name">Boolean Network Tools</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="index.html#boolean-tools">boolean tools</a></span>
+      </p>
+      <ul class="current">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="installation.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="representing_boolean_networks.html" class="reference internal ">Representing Boolean Networks</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 current">
+            
+              <a href="#" class="reference internal current">Reference</a>
+            
+
+            
+              <ul>
+                
+                  <li class="toctree-l2"><a href="#package-overview" class="reference internal">Package Overview</a></li>
+                
+                  <li class="toctree-l2"><a href="#loading-boolean-networks" class="reference internal">Loading Boolean Networks</a></li>
+                
+                  <li class="toctree-l2"><a href="#boolean-network-class" class="reference internal">Boolean Network Class</a></li>
+                
+                  <li class="toctree-l2"><a href="#generating-random-boolean-networks" class="reference internal">Generating Random Boolean Networks</a></li>
+                
+                  <li class="toctree-l2"><a href="#tools-for-analyzing-boolean-networks" class="reference internal">Tools for Analyzing Boolean Networks</a></li>
+                
+              </ul>
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+    
+    <li>Package Overview</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="representing_boolean_networks.html"
+       title="previous chapter">← Boolean Network Representations</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="package-overview">
+<h1>Package Overview<a class="headerlink" href="#package-overview" title="Link to this heading">¶</a></h1>
+<p>This package is designed to analyze boolean networks. It provides tools to load boolean networks from different sources, generate random boolean networks, and analyze the networks.
+The package is organized into the following modules:</p>
+<ul class="simple">
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">booleantools.utils</span></code> - Utility functions</p></li>
+<li><p><a class="reference internal" href="#module-booleantools.randomize" title="booleantools.randomize"><code class="xref py py-mod docutils literal notranslate"><span class="pre">booleantools.randomize</span></code></a> - Functions to generate random boolean networks</p></li>
+<li><p><a class="reference internal" href="#module-booleantools.bn_tools" title="booleantools.bn_tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">booleantools.bn_tools</span></code></a> - Functions to analyze boolean networks</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">booleantools.load</span></code> - Functions to load boolean networks from files</p></li>
+</ul>
+</section>
+<section id="loading-boolean-networks">
+<h1>Loading Boolean Networks<a class="headerlink" href="#loading-boolean-networks" title="Link to this heading">¶</a></h1>
+<p>We implement a Boolean Network class to represent boolean networks.
+The class includes methods to load boolean networks from different sources, such as NCF files, RTT files, and text files.</p>
+</section>
+<section id="boolean-network-class">
+<h1>Boolean Network Class<a class="headerlink" href="#boolean-network-class" title="Link to this heading">¶</a></h1>
+<p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">BooleanNet</span></code> class represents a boolean network with the following attributes:</p>
+<ul class="simple">
+<li><p><strong>num_nodes</strong> (int):
+The number of nodes in the network.</p></li>
+<li><p><strong>input_type</strong> (str):
+The type of input, such as “rtt”, “text”, “ncf”, etc.</p></li>
+</ul>
+<p>The main function of the class is to load Boolean networks from different sources.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet.load">
+<span class="sig-prename descclassname"><span class="pre">booleantools.load.BooleanNet.</span></span><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#booleantools.load.BooleanNet.load" title="Link to this definition">¶</a></dt>
+<dd><p>Loads the input data into the class instance based on the specified input format type.</p>
+<p>This method determines the appropriate <em>internal</em> loading function (<cite>load_ncf</cite>, <cite>load_rtt</cite>, or <cite>load_text</cite>) 
+based on the format type set during initialization. The format must match the input type provided 
+when the class was initialized, otherwise a <cite>ValueError</cite> will be raised.</p>
+<section id="parameters">
+<h2>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">¶</a></h2>
+<dl>
+<dt>input_data<span class="classifier">varies</span></dt><dd><p>The input data to load into the class. The structure of the input depends on the format type:</p>
+<ul>
+<li><p><strong>“NCF-format”</strong>: Data structured according to the NCF format. Currently, this format is <strong>not implemented</strong> in the class.</p></li>
+<li><dl>
+<dt><strong>“rtt-format”</strong>: Data structured using <strong>reduced truth tables</strong>.</dt><dd><ul>
+<li><dl class="simple">
+<dt>This is a tuple consisting of two lists:</dt><dd><ol class="arabic simple">
+<li><p>The <strong>first list</strong> contains the <strong>reduced truth tables</strong> for each node. Each entry in this list represents the truth table for the corresponding node.</p></li>
+<li><p>The <strong>second list</strong> contains the <strong>regulators</strong> for each node. Each entry represents the nodes that regulate the output of the corresponding node.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+</pre></div>
+</div>
+</li>
+<li><p>In this case, the <strong>truth tables</strong> are stored in the variable <cite>self.truth_tables</cite> and the <strong>regulators</strong> in the variable <cite>self.regulators</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>“text-format”</strong>: Data structured as <strong>text-based formulas</strong>.</dt><dd><ul>
+<li><dl class="simple">
+<dt>This is a list of tuples where each tuple consists of:</dt><dd><ol class="arabic simple">
+<li><p>The <strong>first string</strong> representing the node (variable) name.</p></li>
+<li><p>The <strong>second string</strong> representing the <strong>update formula</strong> associated with that node.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2 and not x1&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;x1 or x3&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</li>
+<li><p>In this case, the <strong>variables</strong> are stored in <cite>self.variables</cite>, the <strong>regulators</strong> are stored in <cite>self.regualtors</cite>  and the <strong>update formulas</strong> in <cite>self.update_formulae</cite>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The constants found in the update formulas but not initially listed as nodes are added to both <cite>self.variables</cite> and <cite>self.update_formulae</cite>.</p>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h2>Raises<a class="headerlink" href="#raises" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If the input format type is not one of the expected types (“NCF-format”, “rtt-format”, or “text-format”),
+a <cite>ValueError</cite> is raised.</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h2>Examples:<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">),</span> <span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+<span class="go">[[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]]</span>
+<span class="go">[[0, 2], [0], [1, 2]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;text-format&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">load</span><span class="p">([(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A and B&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;not A&quot;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">update_formulae</span><span class="p">)</span>
+<span class="go">[(&#39;A&#39;, &#39;A and B&#39;), (&#39;B&#39;, &#39;not A&#39;)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<p>Below we describe the class and other methods in detail.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">booleantools.load.</span></span><span class="sig-name descname"><span class="pre">BooleanNet</span></span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.load.BooleanNet" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet.add"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.load.BooleanNet.add" title="Link to this definition">¶</a></dt>
+<dd><p>Add two boolean networks together.</p>
+<section id="id1">
+<h2>Parameters:<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
+<p>network2 (BooleanNet): The boolean network to be added to the current network.</p>
+</section>
+<section id="output">
+<h2>Output:<a class="headerlink" href="#output" title="Link to this heading">¶</a></h2>
+<p>The current network is updated with the contents of the second network merged into it.</p>
+</section>
+<section id="id2">
+<h2>Examples:<a class="headerlink" href="#id2" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">network1</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network1</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network2</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network2</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network1</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">network2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network1</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">),</span> <span class="nb">print</span><span class="p">(</span><span class="n">network1</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+<span class="go">[[1, 1, 0, 0], [0, 1], [0, 0, 0, 0], [1, 0], [1, 1]]</span>
+<span class="go">[[0, 2], [0], [1, 2], [3], [3]]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet.add_edge">
+<span class="sig-name descname"><span class="pre">add_edge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">edge</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet.add_edge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.load.BooleanNet.add_edge" title="Link to this definition">¶</a></dt>
+<dd><p>Add a new edge to the boolean network.</p>
+<section id="id3">
+<h2>Parameters:<a class="headerlink" href="#id3" title="Link to this heading">¶</a></h2>
+<p>edge (tuple): A tuple where the first element is the node and the second element is a list of input nodes.</p>
+</section>
+<section id="id4">
+<h2>Output:<a class="headerlink" href="#id4" title="Link to this heading">¶</a></h2>
+<p>Updates the network by adding the specified edge.</p>
+</section>
+<section id="id5">
+<h2>Examples:<a class="headerlink" href="#id5" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">add_edge</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+<span class="go">[[0, 2], [0], [1, 2], [1, 2]]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet.add_node">
+<span class="sig-name descname"><span class="pre">add_node</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet.add_node"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.load.BooleanNet.add_node" title="Link to this definition">¶</a></dt>
+<dd><p>Add a new node to the boolean network.</p>
+<section id="id6">
+<h2>Parameters:<a class="headerlink" href="#id6" title="Link to this heading">¶</a></h2>
+<p>node (int): The node to be added to the network.</p>
+</section>
+<section id="id7">
+<h2>Output:<a class="headerlink" href="#id7" title="Link to this heading">¶</a></h2>
+<p>Updates the network by adding the specified node.</p>
+</section>
+<section id="id8">
+<h2>Examples:<a class="headerlink" href="#id8" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">add_node</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+<span class="go">[0, 1, 2, 3, 4]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet.change_format">
+<span class="sig-name descname"><span class="pre">change_format</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_format</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet.change_format"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.load.BooleanNet.change_format" title="Link to this definition">¶</a></dt>
+<dd><p>Change the format of the boolean network.</p>
+<section id="id9">
+<h2>Parameters:<a class="headerlink" href="#id9" title="Link to this heading">¶</a></h2>
+<p>new_format (str): The new format to convert the network to. Options are “NCF-format”, “rtt-format”, and “text-format”.</p>
+</section>
+<section id="id10">
+<h2>Output:<a class="headerlink" href="#id10" title="Link to this heading">¶</a></h2>
+<p>Updates the network to the new format.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently only changing from “text-format” to “rtt-format” is implemented. 
+In this case, the method works well as long as the degree of the nodes is less than or equal to 15. 
+If the degree is greater than 15, a warning is issued. To modify this, change the max_degree parameter in the <cite>change_format_text</cite> method.</p>
+</div>
+</section>
+<section id="id11">
+<h2>Examples:<a class="headerlink" href="#id11" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">change_format</span><span class="p">(</span><span class="s2">&quot;text-format&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">input_type</span><span class="p">)</span>
+<span class="go">text-format</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet.clean_variables">
+<span class="sig-name descname"><span class="pre">clean_variables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet.clean_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.load.BooleanNet.clean_variables" title="Link to this definition">¶</a></dt>
+<dd><p>Clean and standardize variable names and update formulae in the Boolean network.
+The method is specifically designed to handle variables and formulae in the “text-format”.</p>
+<dl class="simple">
+<dt>This method performs the following operations:</dt><dd><ul class="simple">
+<li><p>Replaces semi-colons (;) in variable names and update formulae with the placeholder text “_sc_”.</p></li>
+<li><p>Replaces forward slashes (/) in variable names and update formulae with the placeholder text “_fs_”.</p></li>
+<li><p>Replaces dashes (-) in variable names and update formulae with the placeholder text “_dash_”.</p></li>
+<li><p>Replaces plus signs (+) in variable names and update formulae with the placeholder text “_plus_”.</p></li>
+<li><p>Replaces periods (.) in variable names and update formulae with the placeholder text “_dot_”.</p></li>
+<li><p>Updates the <cite>original_variables</cite> dictionary to reflect these changes.</p></li>
+</ul>
+</dd>
+</dl>
+<section id="id12">
+<h2>Parameters:<a class="headerlink" href="#id12" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+</section>
+<section id="returns">
+<h2>Returns:<a class="headerlink" href="#returns" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><p>None</p>
+</div></blockquote>
+<dl class="simple">
+<dt>Modifies internal attributes:</dt><dd><ul class="simple">
+<li><p><cite>original_variables</cite>: Dictionary mapping original variable names to cleaned names.</p></li>
+<li><p><cite>variables</cite>: List of variable names with semi-colons and forward slashes replaced by placeholders.</p></li>
+<li><p><cite>regulators</cite>: List of lists of regulator names with semi-colons and forward slashes replaced by placeholders.</p></li>
+<li><p><cite>update_formulae</cite>: List of tuples where each tuple consists of a variable name and its corresponding formula, with semi-colons and forward slashes replaced by placeholders.</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id13">
+<h2>Examples:<a class="headerlink" href="#id13" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;text-format&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;var1;&#39;</span><span class="p">,</span> <span class="s1">&#39;var2/&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">regulators</span> <span class="o">=</span> <span class="p">[[</span><span class="s1">&#39;var1;&#39;</span><span class="p">],</span> <span class="p">[</span><span class="s1">&#39;var1;&#39;</span><span class="p">,</span> <span class="s1">&#39;var2/&#39;</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">update_formulae</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;var1;&#39;</span><span class="p">,</span> <span class="s1">&#39;var1; AND var2/&#39;</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">clean_variables</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+<span class="go">[&#39;var1_sc_&#39;, &#39;var2_fs_&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+<span class="go">[[&#39;var1_sc_&#39;], [&#39;var1_sc_&#39;, &#39;var2_fs_&#39;]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">update_formulae</span><span class="p">)</span>
+<span class="go">[(&#39;var1_sc_&#39;, &#39;var1_sc_ AND var2_fs_&#39;)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet.essential_regulators">
+<span class="sig-name descname"><span class="pre">essential_regulators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet.essential_regulators"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.load.BooleanNet.essential_regulators" title="Link to this definition">¶</a></dt>
+<dd><p>Identify the essential regulators in the network.</p>
+<section id="id14">
+<h2>Parameters:<a class="headerlink" href="#id14" title="Link to this heading">¶</a></h2>
+<p>None</p>
+</section>
+<section id="id15">
+<h2>Returns:<a class="headerlink" href="#id15" title="Link to this heading">¶</a></h2>
+<p>None</p>
+<dl class="simple">
+<dt>Modifies internal attribute:</dt><dd><ul class="simple">
+<li><p><cite>regulators</cite>: A list of essential regulators for each node in the network.</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Code to correspondingly modify the truth tables needs to be added.</p>
+</div>
+</section>
+<section id="id16">
+<h2>Examples:<a class="headerlink" href="#id16" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">essential_regulators</span><span class="p">())</span>
+<span class="go">[[0, 2], [0], [1, 2]]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd><p>Loads the input data into the class instance based on the specified input format type.</p>
+<p>This method determines the appropriate <em>internal</em> loading function (<cite>load_ncf</cite>, <cite>load_rtt</cite>, or <cite>load_text</cite>) 
+based on the format type set during initialization. The format must match the input type provided 
+when the class was initialized, otherwise a <cite>ValueError</cite> will be raised.</p>
+<section id="id17">
+<h2>Parameters<a class="headerlink" href="#id17" title="Link to this heading">¶</a></h2>
+<dl>
+<dt>input_data<span class="classifier">varies</span></dt><dd><p>The input data to load into the class. The structure of the input depends on the format type:</p>
+<ul>
+<li><p><strong>“NCF-format”</strong>: Data structured according to the NCF format. Currently, this format is <strong>not implemented</strong> in the class.</p></li>
+<li><dl>
+<dt><strong>“rtt-format”</strong>: Data structured using <strong>reduced truth tables</strong>.</dt><dd><ul>
+<li><dl class="simple">
+<dt>This is a tuple consisting of two lists:</dt><dd><ol class="arabic simple">
+<li><p>The <strong>first list</strong> contains the <strong>reduced truth tables</strong> for each node. Each entry in this list represents the truth table for the corresponding node.</p></li>
+<li><p>The <strong>second list</strong> contains the <strong>regulators</strong> for each node. Each entry represents the nodes that regulate the output of the corresponding node.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+</pre></div>
+</div>
+</li>
+<li><p>In this case, the <strong>truth tables</strong> are stored in the variable <cite>self.truth_tables</cite> and the <strong>regulators</strong> in the variable <cite>self.regulators</cite>.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>“text-format”</strong>: Data structured as <strong>text-based formulas</strong>.</dt><dd><ul>
+<li><dl class="simple">
+<dt>This is a list of tuples where each tuple consists of:</dt><dd><ol class="arabic simple">
+<li><p>The <strong>first string</strong> representing the node (variable) name.</p></li>
+<li><p>The <strong>second string</strong> representing the <strong>update formula</strong> associated with that node.</p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p>Example:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="p">[(</span><span class="s2">&quot;x1&quot;</span><span class="p">,</span> <span class="s2">&quot;x2 and not x1&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;x2&quot;</span><span class="p">,</span> <span class="s2">&quot;x1 or x3&quot;</span><span class="p">)]</span>
+</pre></div>
+</div>
+</li>
+<li><p>In this case, the <strong>variables</strong> are stored in <cite>self.variables</cite>, the <strong>regulators</strong> are stored in <cite>self.regualtors</cite>  and the <strong>update formulas</strong> in <cite>self.update_formulae</cite>.</p></li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The constants found in the update formulas but not initially listed as nodes are added to both <cite>self.variables</cite> and <cite>self.update_formulae</cite>.</p>
+</div>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="id18">
+<h2>Raises<a class="headerlink" href="#id18" title="Link to this heading">¶</a></h2>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If the input format type is not one of the expected types (“NCF-format”, “rtt-format”, or “text-format”),
+a <cite>ValueError</cite> is raised.</p>
+</dd>
+</dl>
+</section>
+<section id="id19">
+<h2>Examples:<a class="headerlink" href="#id19" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">),</span> <span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+<span class="go">[[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]]</span>
+<span class="go">[[0, 2], [0], [1, 2]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;text-format&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">load</span><span class="p">([(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A and B&quot;</span><span class="p">),</span> <span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;not A&quot;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">network</span><span class="o">.</span><span class="n">update_formulae</span><span class="p">)</span>
+<span class="go">[(&#39;A&#39;, &#39;A and B&#39;), (&#39;B&#39;, &#39;not A&#39;)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet.replace_in_variables">
+<span class="sig-name descname"><span class="pre">replace_in_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet.replace_in_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.load.BooleanNet.replace_in_variables" title="Link to this definition">¶</a></dt>
+<dd><p>Many biological networks have variable names that contain special characters like semi-colons, forward slashes, etc.
+This causes many issues with Python code. This function replaces the special characters in the variable names with a placeholder text.</p>
+<section id="id20">
+<h2>Parameters:<a class="headerlink" href="#id20" title="Link to this heading">¶</a></h2>
+<p>symbol (str): The special character to be replaced in the variable names.
+replacement (str): The placeholder text to replace the special character with.</p>
+</section>
+<section id="id21">
+<h2>Returns:<a class="headerlink" href="#id21" title="Link to this heading">¶</a></h2>
+<p>None</p>
+<p>Modifies internal attributes:
+- <cite>original_variables</cite>: Dictionary mapping original variable names to cleaned names.
+- <cite>variables</cite>: List of variable names with the special character replaced by the placeholder text.
+- <cite>regulators</cite>: List of lists of regulator names with the special character replaced by the placeholder text.
+- <cite>update_formulae</cite>: List of tuples where each tuple consists of a variable name and its corresponding formula, with the special character replaced by the placeholder text.</p>
+</section>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="booleantools.load.BooleanNet.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/load.html#BooleanNet.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.load.BooleanNet.update" title="Link to this definition">¶</a></dt>
+<dd><p>Update the state of the network.</p>
+<section id="id22">
+<h2>Parameters:<a class="headerlink" href="#id22" title="Link to this heading">¶</a></h2>
+<p>state (list): Current state of the network.</p>
+</section>
+<section id="id23">
+<h2>Returns:<a class="headerlink" href="#id23" title="Link to this heading">¶</a></h2>
+<p>list: Updated state of the network.</p>
+</section>
+<section id="id24">
+<h2>Examples:<a class="headerlink" href="#id24" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">network</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">network</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+<span class="go">[0, 0, 0]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="generating-random-boolean-networks">
+<h1>Generating Random Boolean Networks<a class="headerlink" href="#generating-random-boolean-networks" title="Link to this heading">¶</a></h1>
+<dl class="py function" id="module-booleantools.randomize">
+<dt class="sig sig-object py" id="booleantools.randomize.booleanfunction">
+<span class="sig-prename descclassname"><span class="pre">booleantools.randomize.</span></span><span class="sig-name descname"><span class="pre">booleanfunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probability_one</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/randomize.html#booleanfunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.randomize.booleanfunction" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a random Boolean function.</p>
+<section id="id25">
+<h2>Parameters:<a class="headerlink" href="#id25" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>num_nodes (int): </dt><dd><p>Number of variables.</p>
+</dd>
+<dt>probability_one (float): </dt><dd><p>Probability of having a 1 in the Boolean function.</p>
+</dd>
+<dt>seed (int):</dt><dd><p>Seed for the random number</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id26">
+<h2>Returns:<a class="headerlink" href="#id26" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>np.array: </dt><dd><p>Boolean function as a vector.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id27">
+<h2>Examples:<a class="headerlink" href="#id27" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">booleantools</span> <span class="kn">import</span> <span class="n">randomize</span> <span class="k">as</span> <span class="n">rn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">rn</span><span class="o">.</span><span class="n">booleanfunction</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.randomize.boolnet">
+<span class="sig-prename descclassname"><span class="pre">booleantools.randomize.</span></span><span class="sig-name descname"><span class="pre">boolnet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indegree_distribution</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'uniform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dist_parameter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indegree_vector</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">STRONGLY_CONNECTED</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NO_SELF_REGULATION</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges_wiring_diagram</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/randomize.html#boolnet"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.randomize.boolnet" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a random boolean network. The default is a strongly connected network with uniform in-degree distribution and no self loops.</p>
+<section id="id28">
+<h2>Parameters:<a class="headerlink" href="#id28" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>num_nodes (int): </dt><dd><p>Number of nodes in the network.</p>
+</dd>
+<dt>indegree_distribution (str): </dt><dd><p>Distribution type for in-degrees (<cite>constant</cite>, <cite>dirac</cite>, <cite>delta</cite>, <cite>uniform</cite>, <cite>poisson</cite>).
+The default is <cite>constant</cite>. Note that <cite>dirac</cite>, <cite>delta</cite> and <cite>constant</cite> are equivalent and we allow this for convenience.
+Default is <cite>uniform</cite>.</p>
+</dd>
+<dt>dist_parameter (int/float): </dt><dd><p>Parameter for the in-degree distribution.
+For <cite>constant</cite>/<cite>dirac</cite>/<cite>delta</cite>, this is the in-degree of every node.
+For <cite>poisson</cite> distribution, it is the parameter <cite>lambda</cite>.
+For <cite>uniform</cite> distribution, it is the maximum in-degree.
+Default is set to num_nodes/num_nodes - 1 depending on the <cite>NO_SELF_REGULATION</cite> flag.</p>
+</dd>
+<dt>indegree_vector(list/np.array, optional): </dt><dd><p>User-defined in-degree vector.
+This is the vector of in-degrees for each node in the network. Default is None.</p>
+</dd>
+<dt>STRONGLY_CONNECTED (bool): </dt><dd><p>Ensure the network is strongly connected.
+Default is True.</p>
+</dd>
+<dt>NO_SELF_REGULATION (bool): </dt><dd><p>If True, no node will have a self-regulatory edge. Default is True.</p>
+</dd>
+<dt>edges_wiring_diagram (list, optional): </dt><dd><p>Predefined edge list. Default is None.
+The edge list is a list of tuples (source, target).</p>
+</dd>
+<dt>bias (float):</dt><dd><p>Bias for the Boolean functions i.e number of ones vs zeroes. This is the probability of having a 1 in the Boolean function. Default is 0.5.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id29">
+<h2>Returns:<a class="headerlink" href="#id29" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><p>BooleanNet: A custom class representing the Boolean network. The network will be in reduced truth tables format.</p>
+</div></blockquote>
+</section>
+<section id="id30">
+<h2>Examples:<a class="headerlink" href="#id30" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">booleantools</span> <span class="kn">import</span> <span class="n">randomize</span> <span class="k">as</span> <span class="n">rn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">net</span> <span class="o">=</span> <span class="n">rn</span><span class="o">.</span><span class="n">boolnet</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">,</span><span class="n">net</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.randomize.edge_list">
+<span class="sig-prename descclassname"><span class="pre">booleantools.randomize.</span></span><span class="sig-name descname"><span class="pre">edge_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">indegree_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NO_SELF_REGULATION</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">NO_SINK</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/randomize.html#edge_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.randomize.edge_list" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a random edge list for a network.</p>
+<section id="id31">
+<h2>Parameters:<a class="headerlink" href="#id31" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>num_nodes (int): </dt><dd><p>Number of nodes in the network.</p>
+</dd>
+<dt>indegree_vector (np.array):    </dt><dd><p>Vector of in-degrees.</p>
+</dd>
+<dt>NO_SELF_REGULATION (bool): </dt><dd><p>Prevent self-regulation.</p>
+</dd>
+<dt>NO_SINK (bool): </dt><dd><p>Ensure there are no sinks in the network. In other words, every node has an outdegree &gt; 0.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id32">
+<h2>Returns:<a class="headerlink" href="#id32" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>list: </dt><dd><p>Edge list representing the network.
+The edge list is a list of tuples (source, target).</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id33">
+<h2>Examples:<a class="headerlink" href="#id33" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">booleantools</span> <span class="kn">import</span> <span class="n">randomize</span> <span class="k">as</span> <span class="n">rn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edges</span> <span class="o">=</span> <span class="n">rn</span><span class="o">.</span><span class="n">edge_list</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="n">NO_SELF_REGULATION</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(1, 0), (3, 0), (2, 1), (0, 1), (0, 2), (1, 2), (0, 3), (1, 3), (3, 4), (1, 4)]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">edges</span> <span class="o">=</span> <span class="n">rn</span><span class="o">.</span><span class="n">edge_list</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="n">NO_SELF_REGULATION</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">NO_SINK</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(1, 0), (3, 0), (2, 1), (0, 1), (0, 2), (1, 2), (0, 3), (1, 3), (3, 4), (1, 4)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.randomize.nondegeneratefunction">
+<span class="sig-prename descclassname"><span class="pre">booleantools.randomize.</span></span><span class="sig-name descname"><span class="pre">nondegeneratefunction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_nodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">probability_one</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/randomize.html#nondegeneratefunction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.randomize.nondegeneratefunction" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a random non-degenerated Boolean function.</p>
+<section id="id34">
+<h2>Parameters:<a class="headerlink" href="#id34" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>num_nodes (int): </dt><dd><p>Number of variables.</p>
+</dd>
+<dt>probability_one (float): </dt><dd><p>Probability of having a 1 in the Boolean function.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id35">
+<h2>Returns:<a class="headerlink" href="#id35" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>np.array: </dt><dd><p>Boolean function as a vector.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id36">
+<h2>Examples:<a class="headerlink" href="#id36" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">booleantools</span> <span class="kn">import</span> <span class="n">randomize</span> <span class="k">as</span> <span class="n">rn</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span> <span class="o">=</span> <span class="n">rn</span><span class="o">.</span><span class="n">nondegeneratefunction</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+</section>
+<section id="tools-for-analyzing-boolean-networks">
+<h1>Tools for Analyzing Boolean Networks<a class="headerlink" href="#tools-for-analyzing-boolean-networks" title="Link to this heading">¶</a></h1>
+<dl class="py function" id="module-booleantools.bn_tools">
+<dt class="sig sig-object py" id="booleantools.bn_tools.a_theory_simplicial">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">a_theory_simplicial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simplicial_complex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubical_homology_dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#a_theory_simplicial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.a_theory_simplicial" title="Link to this definition">¶</a></dt>
+<dd><p>This function calculates the cubical homology of a simplicial complex.
+Parameters:
+———-</p>
+<blockquote>
+<div><dl class="simple">
+<dt>simplicial_complex (Julia list): </dt><dd><p>The simplicial complex.</p>
+</dd>
+<dt>cubical_homology_dim (int): </dt><dd><p>The dimension of the cubical homology to be computed.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id37">
+<h2>Returns:<a class="headerlink" href="#id37" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>int: </dt><dd><p>The betti number of the simplicial complex.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id38">
+<h2>Examples:<a class="headerlink" href="#id38" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">simplicial_complex</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a_theory_simplicial</span><span class="p">(</span><span class="n">simplicial_complex</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.canalizing_variables">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">canalizing_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean_func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">variables</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#canalizing_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.canalizing_variables" title="Link to this definition">¶</a></dt>
+<dd><p>Determines if a Boolean function is canalizing.</p>
+<p>A Boolean function f(x_1,…,x_n) is canalizing if it is canalizing in at least one variable.
+A Boolean function f(x_1,…,x_n) is canalizing in x_i if fixing x_i to a specific value (0 or 1) 
+results in a constant function value for all other variables.</p>
+<dl class="simple">
+<dt>Input:</dt><dd><dl class="simple">
+<dt>boolean_func: A Boolean function represented as a vector. This is the output of the truth table </dt><dd><p>(a list or array of length 2^n, where n is the number of input variables).</p>
+</dd>
+<dt>num_vars (optional): The number of variables in the Boolean function. If not provided, it is </dt><dd><p>inferred from the length of <cite>boolean_func</cite>.</p>
+</dd>
+</dl>
+</dd>
+<dt>Output:</dt><dd><p>True if the Boolean function is canalizing, False otherwise.</p>
+</dd>
+</dl>
+<p>..note:: The function has serious issues with the current implementation. It is not working as expected.</p>
+<p>Examples:</p>
+<blockquote>
+<div><p>&gt;&gt;&gt;is_canalizing([1, 0, 0, 1])
+False
+&gt;&gt;&gt;is_canalizing([1, 1, 1, 1])
+True
+&gt;&gt;&gt;is_canalizing([1, 0, 1, 1, 1, 0, 1, 1])
+True</p>
+</div></blockquote>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.cubical_homology_poset">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">cubical_homology_poset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplex_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">codimension</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cubical_homology_dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#cubical_homology_poset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.cubical_homology_poset" title="Link to this definition">¶</a></dt>
+<dd><p>This function calculates the cubical homology of a graph given the vertices and edges of the graph.
+This requires Julia to be installed and the JULIA environment variable to be set to True.
+Parameters:
+———-</p>
+<blockquote>
+<div><dl class="simple">
+<dt>vertices (list): </dt><dd><p>List of vertices in the graph.</p>
+</dd>
+<dt>edges (list): </dt><dd><p>List of edges in the graph.</p>
+</dd>
+<dt>simplex_dim (int): </dt><dd><p>The dimension of the simplices we are considering</p>
+</dd>
+<dt>codimension (int): </dt><dd><p>The codimension of the simplices that are shared by the simplices.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id39">
+<h2>Returns:<a class="headerlink" href="#id39" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>int: </dt><dd><p>The betti number of the graph.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id40">
+<h2>Examples:<a class="headerlink" href="#id40" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cubical_homology_poset</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span><span class="n">edges</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="go">1</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>..note:: </dt><dd><p>If the graph has cycles then the function will throw StackOverflowError.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.essential_variables">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">essential_variables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regulators</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#essential_variables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.essential_variables" title="Link to this definition">¶</a></dt>
+<dd><p>Identify the essential variables in a Boolean function.
+The essential variables are the variables that are necessary to determine the output of the function.
+We identify the essential variables by checking if the function output changes when the variable is flipped.</p>
+<section id="id41">
+<h2>Parameters:<a class="headerlink" href="#id41" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>function (list or np.array): </dt><dd><p>Boolean function represented as a list or numpy array.
+The function is represented as a vector of 2^n elements, where n is the number of variables.
+The function at index i is the output of the function for the binary representation of i.</p>
+</dd>
+<dt>regulators (list):</dt><dd><p>List of regulators in the network.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id42">
+<h2>Returns:<a class="headerlink" href="#id42" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>essential_vars (list): </dt><dd><p>A list of essential variables in the Boolean function.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id43">
+<h2>Examples:<a class="headerlink" href="#id43" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">essential_variables</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">])</span>
+<span class="go">[&#39;A&#39;, &#39;B&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">essential_variables</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">])</span>
+<span class="go">[&#39;B&#39;]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">essential_variables</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">])</span>
+<span class="go">[0]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.is_degenerated">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">is_degenerated</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#is_degenerated"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.is_degenerated" title="Link to this definition">¶</a></dt>
+<dd><p>Check if a Boolean function is degenerated (does not depend on at least one variable).
+We check this by verifying if the function depends on each variable.
+In particular, we check if the function changes its output when the variable is flipped.</p>
+<section id="id44">
+<h2>Parameters:<a class="headerlink" href="#id44" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>function (list or np.array): </dt><dd><p>Boolean function represented as a list or numpy array.
+The function is represented as a vector of 2^n elements, where n is the number of variables.
+The function at index i is the output of the function for the binary representation of i.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id45">
+<h2>Returns:<a class="headerlink" href="#id45" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>bool: </dt><dd><p>True if the function is degenerated, False otherwise.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id46">
+<h2>Examples:<a class="headerlink" href="#id46" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">is_degenerated</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_degenerated</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+<span class="go">False</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">is_degenerated</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.network_scc">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">network_scc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#network_scc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.network_scc" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the DAG of strongly connected components of a network
+Parameters:
+———-</p>
+<blockquote>
+<div><dl class="simple">
+<dt>network (list): </dt><dd><p>A Boolean Network.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id47">
+<h2>Returns:<a class="headerlink" href="#id47" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>components (list): </dt><dd><p>The DAG of strongly connected components.</p>
+</dd>
+<dt>DAG (list): </dt><dd><p>The DAG of strongly connected components.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id48">
+<h2>Examples:<a class="headerlink" href="#id48" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wiring_diagram</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">boolean_network</span> <span class="o">=</span> <span class="n">rn</span><span class="o">.</span><span class="n">boolnet</span><span class="p">(</span><span class="n">num_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">edges_wiring_diagram</span> <span class="o">=</span> <span class="n">wiring_diagram_list</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span><span class="n">edges</span> <span class="o">=</span> <span class="n">network_scc</span><span class="p">(</span><span class="n">boolean_network</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+<span class="go">[(0, {&#39;members&#39;: {2}}), (1, {&#39;members&#39;: {0, 1}})]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(1, 0)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.num_attractors">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">num_attractors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boolean_network</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_simulations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_sample_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_transition_graph</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exact</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.txt'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#num_attractors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.num_attractors" title="Link to this definition">¶</a></dt>
+<dd><p>Calculate the number of attractors in a Boolean network.
+The algorithm uses a random sampling approach to identify attractors in the network.
+In particular, we start with a random initial state and simulate the network until we reach either a known attractor basin or a new attractor state.
+We repeat this process for a number of simulations to identify all attractors in the network.</p>
+<section id="id49">
+<h2>Parameters:<a class="headerlink" href="#id49" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>boolean_network (class boolean network): </dt><dd><p>Boolean network represented as a list or numpy array.
+The network is represented as a vector of 2^n elements, where n is the number of variables.
+The network at index i is the output of the network for the binary representation of i.</p>
+</dd>
+<dt>max_steps (int, optional): </dt><dd><p>The maximum number of steps to simulate the network. Default is 1000.</p>
+</dd>
+<dt>num_simulations (int, optional): </dt><dd><p>The number of simulations to run. Default is 100.</p>
+</dd>
+<dt>initial_sample_points (list, optional): </dt><dd><p>A list of initial sample points to start the simulations from. If not provided, points will be chosen randomly. Default is an empty list.</p>
+</dd>
+<dt>exact (bool, optional):</dt><dd><p>If True, the function will consider all possible initial states. Default is True.</p>
+</dd>
+<dt>state_transition_graph (bool, optional):</dt><dd><p>If True, the function will output the state transition graph. Default is False.</p>
+</dd>
+<dt>output_file (str, optional):</dt><dd><p>The name of the output file to save the state transition graph. Default is “output.txt”.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id50">
+<h2>Returns:<a class="headerlink" href="#id50" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>attractors (list):</dt><dd><p>A list of attractors in the network. Each attractor is a list of states.</p>
+</dd>
+<dt>basin_sizes (list):</dt><dd><p>A list of basin sizes for each attractor.</p>
+</dd>
+<dt>attr_dict (dict):   </dt><dd><p>A dictionary mapping each state to its corresponding attractor index.</p>
+</dd>
+<dt>update_dict (dict):</dt><dd><p>A dictionary mapping each state to its next state.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id51">
+<h2>Examples:<a class="headerlink" href="#id51" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">attractors</span><span class="p">,</span>  <span class="n">basin_sizes</span><span class="p">,</span>  <span class="n">attr_dict</span><span class="p">,</span> <span class="n">update_dict</span> <span class="o">=</span> <span class="n">num_attractors</span><span class="p">(</span>
+<span class="go">rn.boolnet(5, seed=9), initial_sample_points=[i for i in range(25)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Print the results</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attractors: </span><span class="si">{</span><span class="n">attractors</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of attractors: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">attractors</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Basin sizes: </span><span class="si">{</span><span class="n">basin_sizes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of indices considered: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">attr_dict</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Attractor index dict: </span><span class="si">{</span><span class="n">attr_dict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Update dict: </span><span class="si">{</span><span class="n">update_dict</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="go">Attractors: [[11, 22], [27, 30, 15, 21]]</span>
+<span class="go">Number of attractors: 2</span>
+<span class="go">Basin sizes: [7, 20]</span>
+<span class="go">Number of attractor index dict entries: 27</span>
+<span class="go">Attractor index dict: {0: 0, 11: 0, 22: 0, 1: 1, 19: 1, 27: 1, 30: 1, 15: 1, 21: 1, 2: 1, 3: 1, 4: 1, 5: 1, 17: 1, 6: 1, 7: 1, 8: 1, 14: 1, 9: 0, 18: 0, 10: 1, 12: 1, 13: 1, 16: 0, 20: 0, 23: 1, 24: 1}</span>
+<span class="go">Update dict: {0: 11, 11: 22, 22: 11, 1: 19, 19: 27, 27: 30, 30: 15, 15: 21, 21: 27, 2: 3, 3: 19, 4: 1, 5: 17, 17: 19, 6: 1, 7: 17, 8: 14, 14: 5, 9: 18, 18: 11, 10: 6, 12: 5, 13: 17, 16: 11, 20: 11, 23: 19, 24: 14}</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.order_complex">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">order_complex</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vertices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edges</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#order_complex"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.order_complex" title="Link to this definition">¶</a></dt>
+<dd><p>This function orders the simplicial complex given the vertices and edges of the graph.
+Parameters:
+———-</p>
+<blockquote>
+<div><dl class="simple">
+<dt>vertices (list): </dt><dd><p>List of vertices in the graph.</p>
+</dd>
+<dt>edges (list): </dt><dd><p>List of edges in the graph.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id52">
+<h2>Returns:<a class="headerlink" href="#id52" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>Julia list: </dt><dd><p>The simplicial complex ordered by dimension.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id53">
+<h2>Examples:<a class="headerlink" href="#id53" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">edges</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">),(</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">),(</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">),(</span><span class="mi">7</span><span class="p">,</span><span class="mi">6</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">order_complex</span><span class="p">(</span><span class="n">vertices</span><span class="p">,</span><span class="n">edges</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="simple">
+<dt>..note::</dt><dd><p>The object will throw a StackOverflowError if the graph has cycles. Furthermore, the function will return a Julia object.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.simplicial_to_graph">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">simplicial_to_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">simplicial_complex</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">simplex_dim</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">codimension</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#simplicial_to_graph"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.simplicial_to_graph" title="Link to this definition">¶</a></dt>
+<dd><p>This function converts a simplicial complex to a graph.
+Parameters:
+———-</p>
+<blockquote>
+<div><dl class="simple">
+<dt>simplicial_complex (Julia list): </dt><dd><p>The simplicial complex.</p>
+</dd>
+<dt>simplex_dim (int): </dt><dd><p>The dimension of the simplices we are considering</p>
+</dd>
+<dt>codimension (int): </dt><dd><p>The codimension of the simplices that are shared by the simplices.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id54">
+<h2>Returns:<a class="headerlink" href="#id54" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>Julia list: </dt><dd><p>The graph.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id55">
+<h2>Examples:<a class="headerlink" href="#id55" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">simplicial_complex</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">6</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">7</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simplicial_to_graph</span><span class="p">(</span><span class="n">simplicial_complex</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.strongly_connected_components">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">strongly_connected_components</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wiring_diagram</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#strongly_connected_components"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.strongly_connected_components" title="Link to this definition">¶</a></dt>
+<dd><p>Computes the DAG of strongly connected components of a wiring diagram.
+Parameters:
+———-</p>
+<blockquote>
+<div><dl class="simple">
+<dt>wiring_diagram (list): </dt><dd><p>The wiring diagram of the network.</p>
+</dd>
+</dl>
+</div></blockquote>
+<section id="id56">
+<h2>Returns:<a class="headerlink" href="#id56" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>compoents (list): </dt><dd><p>The DAG of strongly connected components.</p>
+</dd>
+<dt>DAG (list): </dt><dd><p>The DAG of strongly connected components.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id57">
+<h2>Examples:<a class="headerlink" href="#id57" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">wiring_diagram</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">nodes</span><span class="p">,</span><span class="n">edges</span> <span class="o">=</span> <span class="n">strongly_connected_components</span><span class="p">(</span><span class="n">wiring_diagram</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">nodes</span><span class="p">)</span>
+<span class="go">[(0, {&#39;members&#39;: {2}}), (1, {&#39;members&#39;: {0, 1}})]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">edges</span><span class="p">)</span>
+<span class="go">[(1, 0)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="booleantools.bn_tools.wiring_diagram">
+<span class="sig-prename descclassname"><span class="pre">booleantools.bn_tools.</span></span><span class="sig-name descname"><span class="pre">wiring_diagram</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">network</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/booleantools/bn_tools.html#wiring_diagram"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#booleantools.bn_tools.wiring_diagram" title="Link to this definition">¶</a></dt>
+<dd><section id="id58">
+<h2>Parameters:<a class="headerlink" href="#id58" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>network (BooleanNet): </dt><dd><p>A Boolean network object.</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id59">
+<h2>Returns:<a class="headerlink" href="#id59" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><dl class="simple">
+<dt>list: </dt><dd><p>The wiring diagram</p>
+</dd>
+</dl>
+</div></blockquote>
+</section>
+<section id="id60">
+<h2>Examples:<a class="headerlink" href="#id60" title="Link to this heading">¶</a></h2>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">num_nodes</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wiring_diagram_list</span><span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_nodes</span><span class="o">-</span><span class="mi">1</span><span class="p">)]</span><span class="o">+</span> <span class="p">[(</span><span class="n">num_nodes</span><span class="o">//</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">)]</span> <span class="o">+</span> <span class="p">[(</span><span class="n">num_nodes</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">num_nodes</span><span class="o">//</span><span class="mi">2</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">wiring_diagram_list</span><span class="p">)</span>
+<span class="go">[(0, 1), (1, 2), (2, 3), (3, 4), (2, 0), (4, 2)]</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">boolean_network</span> <span class="o">=</span> <span class="n">rn</span><span class="o">.</span><span class="n">boolnet</span><span class="p">(</span><span class="n">num_nodes</span><span class="o">=</span><span class="n">num_nodes</span><span class="p">,</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">edges_wiring_diagram</span> <span class="o">=</span> <span class="n">wiring_diagram_list</span><span class="p">)</span>   
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">wiring_diagram</span><span class="p">(</span><span class="n">boolean_network</span><span class="p">))</span>
+<span class="go">[(2, 0), (0, 1), (1, 2), (4, 2), (2, 3), (3, 4)]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="representing_boolean_networks.html"
+       title="previous chapter">← Boolean Network Representations</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright Copyright (c) 2024, VENKATA SAI NARAYANA BAVISETTY.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

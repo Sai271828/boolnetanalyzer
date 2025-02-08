@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Boolean Tools</title>
+    
+          <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="_static/theme-vendors.js"></script> -->
+      <script src="_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="next" title="Installation" href="installation.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="#" class="home-link">
+    
+      <span class="site-name">Boolean Network Tools</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="#boolean-tools">boolean tools</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="installation.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="representing_boolean_networks.html" class="reference internal ">Representing Boolean Networks</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="functions.html" class="reference internal ">Reference</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+    
+    <li>Boolean Tools</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="next">
+    <a href="installation.html"
+       title="next chapter">Installation →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="boolean-tools">
+<h1>Boolean Tools<a class="headerlink" href="#boolean-tools" title="Link to this heading">¶</a></h1>
+<p>This package is a collection of mathematical tools to analyze Boolean networks.
+Boolean networks are a class of discrete dynamical systems that are used to model gene regulatory networks.
+The package provides tools to generate random Boolean networks, analyze their dynamics, and load networks from files.</p>
+<p>The package is organized into the following modules:</p>
+<ul class="simple">
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">booleantools.utils</span></code> - Utility functions</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">booleantools.random_networks</span></code> - Functions to generate random Boolean networks</p></li>
+<li><p><a class="reference internal" href="functions.html#module-booleantools.bn_tools" title="booleantools.bn_tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">booleantools.bn_tools</span></code></a> - Functions to analyze Boolean networks</p></li>
+<li><p><code class="xref py py-mod docutils literal notranslate"><span class="pre">booleantools.load</span></code> - Functions to load Boolean networks from files</p></li>
+</ul>
+<p>The package is developed by the Laboratory for Systems Medicine at the University of Florida.</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="representing_boolean_networks.html">Representing Boolean Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html">Package Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html#loading-boolean-networks">Loading Boolean Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html#boolean-network-class">Boolean Network Class</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html#generating-random-boolean-networks">Generating Random Boolean Networks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="functions.html#tools-for-analyzing-boolean-networks">Tools for Analyzing Boolean Networks</a></li>
+</ul>
+</div>
+</section>
+<section id="acknowledgements">
+<h1>Acknowledgements<a class="headerlink" href="#acknowledgements" title="Link to this heading">¶</a></h1>
+<p>Much of the code in this package is based on the work of Claus Kadelka and his collaborators available at [DesignGenePrinciples](<a class="reference external" href="https://github.com/ckadelka/DesignPrinciplesGeneNetworks">https://github.com/ckadelka/DesignPrinciplesGeneNetworks</a>).</p>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="next">
+    <a href="installation.html"
+       title="next chapter">Installation →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright Copyright (c) 2024, VENKATA SAI NARAYANA BAVISETTY.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

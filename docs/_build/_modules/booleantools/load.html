@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>booleantools.load</title>
+    
+          <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="../../_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="../../_static/theme-vendors.js"></script> -->
+      <script src="../../_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="../../genindex.html" />
+  <link rel="search" title="Search" href="../../search.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="../../index.html" class="home-link">
+    
+      <span class="site-name">Boolean Network Tools</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="../../search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="../../index.html#boolean-tools">boolean tools</a></span>
+      </p>
+      <ul class="">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../installation.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../representing_boolean_networks.html" class="reference internal ">Representing Boolean Networks</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="../../functions.html" class="reference internal ">Reference</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="../../index.html">Docs</a> &raquo;</li>
+    
+      <li><a href="../index.html">Module code</a> &raquo;</li>
+    
+    <li>booleantools.load</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <h1>Source code for booleantools.load</h1><div class="highlight"><pre>
+<span></span><span class="c1"># This is used for loading boolean networks</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+<span class="c1"># load the environmental variable from the .env file</span>
+<span class="kn">from</span> <span class="nn">dotenv</span> <span class="kn">import</span> <span class="n">load_dotenv</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="n">load_dotenv</span><span class="p">()</span>
+<span class="n">script_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;..&#39;</span><span class="p">))</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">script_path</span><span class="p">)</span>
+
+<span class="c1"># Function to parse text file</span>
+<span class="k">def</span> <span class="nf">parse_text_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;=&quot;</span><span class="p">,</span> <span class="n">char_not</span><span class="o">=</span><span class="s2">&quot;NOT&quot;</span><span class="p">,</span> <span class="n">char_and</span><span class="o">=</span><span class="s2">&quot;AND&quot;</span><span class="p">,</span> <span class="n">char_or</span><span class="o">=</span><span class="s2">&quot;OR&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Parses a text file containing node-formula pairs, processes the formulas by replacing specified logical operators </span>
+<span class="sd">    (e.g., &quot;NOT&quot;, &quot;AND&quot;, &quot;OR&quot;) with their Python equivalents, and returns a list of tuples with the node and updated formula.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    ----------`</span>
+<span class="sd">        file_path (str): The path to the text file that needs to be parsed.</span>
+<span class="sd">        delimiter (str, optional): The character used to separate the node and the formula in each line of the file.</span>
+<span class="sd">                                   Defaults to &quot;=&quot;.</span>
+<span class="sd">        char_not (str, optional): The string representing logical negation in the file. It will be replaced with &quot;not&quot; in Python.</span>
+<span class="sd">                                  Defaults to &quot;NOT&quot;.</span>
+<span class="sd">        char_and (str, optional): The string representing logical conjunction in the file. It will be replaced with &quot;and&quot; in Python.</span>
+<span class="sd">                                  Defaults to &quot;AND&quot;.</span>
+<span class="sd">        char_or (str, optional): The string representing logical disjunction in the file. It will be replaced with &quot;or&quot; in Python.</span>
+<span class="sd">                                 Defaults to &quot;OR&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    -------</span>
+<span class="sd">        list: A list of tuples where each tuple contains a node (str) and its corresponding updated formula (str).</span>
+<span class="sd">    </span>
+<span class="sd">    Example:</span>
+<span class="sd">    --------</span>
+<span class="sd">        Input file:</span>
+<span class="sd">        ```</span>
+<span class="sd">        node1 = NOT A AND B</span>
+<span class="sd">        node2 = A OR B</span>
+<span class="sd">        ```</span>
+
+<span class="sd">        Output:</span>
+<span class="sd">        [(&#39;node1&#39;, &#39;not A and B&#39;), (&#39;node2&#39;, &#39;A or B&#39;)]</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="n">update_formulae</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">node</span><span class="p">,</span> <span class="n">formula</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+                <span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char_not</span><span class="p">,</span> <span class="s2">&quot;not&quot;</span><span class="p">)</span>
+                <span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char_and</span><span class="p">,</span> <span class="s2">&quot;and&quot;</span><span class="p">)</span>
+                <span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">char_or</span><span class="p">,</span> <span class="s2">&quot;or&quot;</span><span class="p">)</span>
+                <span class="n">update_formulae</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">node</span><span class="p">,</span> <span class="n">formula</span><span class="p">))</span>
+    
+    <span class="k">return</span> <span class="n">update_formulae</span>
+
+
+<span class="c1"># Define the class BooleanNet</span>
+<div class="viewcode-block" id="BooleanNet">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet">[docs]</a>
+<span class="k">class</span> <span class="nc">BooleanNet</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_type</span><span class="p">,</span><span class="n">num_nodes</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes the class instance with a specified number of nodes and an input format type.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        num_nodes : int</span>
+<span class="sd">            The number of nodes (variables) in the network.</span>
+<span class="sd">        </span>
+<span class="sd">        input_type : str</span>
+<span class="sd">            The format of the input data. It must be one of the following:</span>
+<span class="sd">            - &quot;NCF-format&quot;: Format specific to NCF.</span>
+<span class="sd">            - &quot;rtt-format&quot;: Format that uses truth tables.</span>
+<span class="sd">            - &quot;text-format&quot;: Format that uses text-based formulas.</span>
+<span class="sd">        </span>
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the provided `input_type` is not one of the accepted formats, a ValueError is raised.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="c1"># Store the number of nodes in the network.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">=</span> <span class="n">num_nodes</span>
+        <span class="c1"># Store the format type for input data (e.g., NCF, rtt, or text format).</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">=</span> <span class="n">input_type</span>
+
+        <span class="c1"># Validate that the input type is one of the supported formats.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">!=</span> <span class="s2">&quot;NCF-format&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">!=</span> <span class="s2">&quot;rtt-format&quot;</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">!=</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type&quot;</span><span class="p">)</span>
+        
+        <span class="c1"># If the input type is &quot;NCF-format&quot;, no specific initialization is needed yet.</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;NCF-format&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>  <span class="c1"># Future setup for NCF format can go here.</span>
+        
+        <span class="c1"># If the input type is &quot;rtt-format&quot;, initialize data structures for truth tables and regulators.</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List to hold the reduced truth tables for each node.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List to hold the regulators for each node.</span>
+        
+        <span class="c1"># If the input type is &quot;text-format&quot;, initialize data structures for formulas, variables, and regulators.</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">update_formulae</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List to store the update formulas for each node.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List to store the variable names.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># List to store the regulators for each node.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">original_variables</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1"># Dictionary to map original variable names.</span>
+        
+        <span class="c1"># If somehow an invalid input type is provided, raise a ValueError (extra check for safety).</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BooleanNet.replace_in_variables">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet.replace_in_variables">[docs]</a>
+    <span class="k">def</span> <span class="nf">replace_in_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">symbol</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Many biological networks have variable names that contain special characters like semi-colons, forward slashes, etc.</span>
+<span class="sd">        This causes many issues with Python code. This function replaces the special characters in the variable names with a placeholder text.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ----------</span>
+<span class="sd">        symbol (str): The special character to be replaced in the variable names.</span>
+<span class="sd">        replacement (str): The placeholder text to replace the special character with.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Modifies internal attributes:</span>
+<span class="sd">        - `original_variables`: Dictionary mapping original variable names to cleaned names.</span>
+<span class="sd">        - `variables`: List of variable names with the special character replaced by the placeholder text.</span>
+<span class="sd">        - `regulators`: List of lists of regulator names with the special character replaced by the placeholder text.</span>
+<span class="sd">        - `update_formulae`: List of tuples where each tuple consists of a variable name and its corresponding formula, with the special character replaced by the placeholder text.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Replace in original_variables</span>
+        <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_variables</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">original_variables</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">original_variables</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span><span class="n">replacement</span><span class="p">)</span>
+
+        <span class="c1"># Replace in variables</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">variable</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">]</span>
+
+        <span class="c1"># Replace in regulators</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span> <span class="o">=</span> <span class="p">[[</span><span class="n">variable</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span> <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">regulators</span><span class="p">]</span> <span class="k">for</span> <span class="n">regulators</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">]</span>
+
+        <span class="c1"># Replace in update_formulae</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">update_formulae</span> <span class="o">=</span> <span class="p">[(</span><span class="n">variable</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">replacement</span><span class="p">),</span> <span class="n">formula</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="n">replacement</span><span class="p">))</span> <span class="k">for</span> <span class="n">variable</span><span class="p">,</span> <span class="n">formula</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_formulae</span><span class="p">]</span></div>
+
+        
+         
+
+        
+    <span class="c1">## Define the clean variables function</span>
+    <span class="c1">## In biological networks, the variables are usually represented with very wierd names such APC/C, APC/C:cdc20, etc. </span>
+    <span class="c1">## This can cause a lot of complications in the code. So, we need to clean the variables and store a dictionary that remebers the original variable names</span>
+<div class="viewcode-block" id="BooleanNet.clean_variables">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet.clean_variables">[docs]</a>
+    <span class="k">def</span> <span class="nf">clean_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Clean and standardize variable names and update formulae in the Boolean network.</span>
+<span class="sd">        The method is specifically designed to handle variables and formulae in the &quot;text-format&quot;.</span>
+
+<span class="sd">        This method performs the following operations:</span>
+<span class="sd">            - Replaces semi-colons (;) in variable names and update formulae with the placeholder text &quot;_sc_&quot;.</span>
+<span class="sd">            - Replaces forward slashes (/) in variable names and update formulae with the placeholder text &quot;_fs_&quot;.</span>
+<span class="sd">            - Replaces dashes (-) in variable names and update formulae with the placeholder text &quot;_dash_&quot;.</span>
+<span class="sd">            - Replaces plus signs (+) in variable names and update formulae with the placeholder text &quot;_plus_&quot;.</span>
+<span class="sd">            - Replaces periods (.) in variable names and update formulae with the placeholder text &quot;_dot_&quot;.</span>
+<span class="sd">            - Updates the `original_variables` dictionary to reflect these changes.</span>
+
+<span class="sd">        </span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        -----------</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        --------</span>
+<span class="sd">            None</span>
+
+<span class="sd">        Modifies internal attributes:</span>
+<span class="sd">            - `original_variables`: Dictionary mapping original variable names to cleaned names.</span>
+<span class="sd">            - `variables`: List of variable names with semi-colons and forward slashes replaced by placeholders.</span>
+<span class="sd">            - `regulators`: List of lists of regulator names with semi-colons and forward slashes replaced by placeholders.</span>
+<span class="sd">            - `update_formulae`: List of tuples where each tuple consists of a variable name and its corresponding formula, with semi-colons and forward slashes replaced by placeholders.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        ---------</span>
+<span class="sd">        &gt;&gt;&gt; network = BooleanNet(&quot;text-format&quot;,3)</span>
+<span class="sd">        &gt;&gt;&gt; network.variables = [&#39;var1;&#39;, &#39;var2/&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; network.regulators = [[&#39;var1;&#39;], [&#39;var1;&#39;, &#39;var2/&#39;]]</span>
+<span class="sd">        &gt;&gt;&gt; network.update_formulae = [(&#39;var1;&#39;, &#39;var1; AND var2/&#39;)]</span>
+<span class="sd">        &gt;&gt;&gt; network.clean_variables()</span>
+<span class="sd">        &gt;&gt;&gt; print(network.variables)</span>
+<span class="sd">        [&#39;var1_sc_&#39;, &#39;var2_fs_&#39;]</span>
+<span class="sd">        &gt;&gt;&gt; print(network.regulators)</span>
+<span class="sd">        [[&#39;var1_sc_&#39;], [&#39;var1_sc_&#39;, &#39;var2_fs_&#39;]]</span>
+<span class="sd">        &gt;&gt;&gt; print(network.update_formulae)</span>
+<span class="sd">        [(&#39;var1_sc_&#39;, &#39;var1_sc_ AND var2_fs_&#39;)]</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="c1"># replace the semi-colon in the variables and regulators with the text _sc_</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace_in_variables</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">,</span> <span class="s2">&quot;_sc_&quot;</span><span class="p">)</span>
+            <span class="c1"># replace the forward slash in the variables and regulators with the text _fs_</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace_in_variables</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;_fs_&quot;</span><span class="p">)</span>
+            <span class="c1"># replace the - in the variables and regulators with the text _dash_</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace_in_variables</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_dash_&quot;</span><span class="p">)</span>
+            <span class="c1"># replace the + in the variables and regulators with the text _plus_</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace_in_variables</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">,</span> <span class="s2">&quot;_plus_&quot;</span><span class="p">)</span>
+            <span class="c1"># replace the . in the variables and regulators with the text _dot_</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">replace_in_variables</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">,</span> <span class="s2">&quot;_dot_&quot;</span><span class="p">)</span></div>
+
+            
+        
+        
+    <span class="c1">## Define the load function</span>
+<div class="viewcode-block" id="BooleanNet.load">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet.load">[docs]</a>
+    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads the input data into the class instance based on the specified input format type.</span>
+
+<span class="sd">        This method determines the appropriate *internal* loading function (`load_ncf`, `load_rtt`, or `load_text`) </span>
+<span class="sd">        based on the format type set during initialization. The format must match the input type provided </span>
+<span class="sd">        when the class was initialized, otherwise a `ValueError` will be raised.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        input_data : varies</span>
+<span class="sd">            The input data to load into the class. The structure of the input depends on the format type:</span>
+
+<span class="sd">            - **&quot;NCF-format&quot;**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.</span>
+
+<span class="sd">            - **&quot;rtt-format&quot;**: Data structured using **reduced truth tables**.</span>
+<span class="sd">                - This is a tuple consisting of two lists:</span>
+<span class="sd">                    1. The **first list** contains the **reduced truth tables** for each node. Each entry in this list represents the truth table for the corresponding node.</span>
+<span class="sd">                    2. The **second list** contains the **regulators** for each node. Each entry represents the nodes that regulate the output of the corresponding node.</span>
+<span class="sd">                - Example:</span>
+<span class="sd">                    </span>
+<span class="sd">                    &gt;&gt;&gt; ([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]])</span>
+<span class="sd">                    </span>
+<span class="sd">                - In this case, the **truth tables** are stored in the variable `self.truth_tables` and the **regulators** in the variable `self.regulators`.</span>
+
+<span class="sd">            - **&quot;text-format&quot;**: Data structured as **text-based formulas**.</span>
+<span class="sd">                - This is a list of tuples where each tuple consists of:</span>
+<span class="sd">                    1. The **first string** representing the node (variable) name.</span>
+<span class="sd">                    2. The **second string** representing the **update formula** associated with that node.</span>
+<span class="sd">                - Example:</span>
+<span class="sd">                    </span>
+<span class="sd">                    &gt;&gt;&gt; [(&quot;x1&quot;, &quot;x2 and not x1&quot;), (&quot;x2&quot;, &quot;x1 or x3&quot;)]</span>
+<span class="sd">                </span>
+<span class="sd">                - In this case, the **variables** are stored in `self.variables`, the **regulators** are stored in `self.regualtors`  and the **update formulas** in `self.update_formulae`.</span>
+<span class="sd">                .. note::</span>
+
+<span class="sd">                    The constants found in the update formulas but not initially listed as nodes are added to both `self.variables` and `self.update_formulae`.</span>
+
+
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the input format type is not one of the expected types (&quot;NCF-format&quot;, &quot;rtt-format&quot;, or &quot;text-format&quot;),</span>
+<span class="sd">            a `ValueError` is raised.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        ---------</span>
+<span class="sd">        &gt;&gt;&gt; network = BooleanNet(&quot;rtt-format&quot;,3)</span>
+<span class="sd">        &gt;&gt;&gt; network.load(([[1,1,0,0],[0,1],[0,0,0,0]],[[0,2],[0],[1,2]]))</span>
+<span class="sd">        &gt;&gt;&gt; print(network.truth_tables), print(network.regulators)</span>
+<span class="sd">        [[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]]</span>
+<span class="sd">        [[0, 2], [0], [1, 2]]</span>
+<span class="sd">        &gt;&gt;&gt; network = BooleanNet(&quot;text-format&quot;,2)</span>
+<span class="sd">        &gt;&gt;&gt; network.load([(&quot;A&quot;, &quot;A and B&quot;), (&quot;B&quot;, &quot;not A&quot;)])</span>
+<span class="sd">        &gt;&gt;&gt; print(network.update_formulae)</span>
+<span class="sd">        [(&#39;A&#39;, &#39;A and B&#39;), (&#39;B&#39;, &#39;not A&#39;)]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;NCF-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_ncf</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_rtt</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_text</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type&quot;</span><span class="p">)</span></div>
+
+
+        
+    <span class="c1">## Define the update function</span>
+<div class="viewcode-block" id="BooleanNet.update">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the state of the network.</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        ----------</span>
+<span class="sd">        state (list): Current state of the network.</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">        ------- </span>
+<span class="sd">        list: Updated state of the network.</span>
+<span class="sd">        </span>
+<span class="sd">        Examples:</span>
+<span class="sd">        --------</span>
+<span class="sd">        </span>
+<span class="sd">        &gt;&gt;&gt; network = BooleanNet(&quot;rtt-format&quot;,3)</span>
+<span class="sd">        &gt;&gt;&gt; network.load(([[1,1,0,0],[0,1],[0,0,0,0]],[[0,2],[0],[1,2]]))</span>
+<span class="sd">        &gt;&gt;&gt; state = [1, 0, 1]</span>
+<span class="sd">        &gt;&gt;&gt; network.update(state)</span>
+<span class="sd">        [0, 0, 0]</span>
+<span class="sd">        </span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># update the state of the network</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;NCF-format&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_ncf</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_rtt</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_text</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type&quot;</span><span class="p">)</span>
+        <span class="k">pass</span></div>
+
+    
+        <span class="c1">## Define the add function</span>
+<div class="viewcode-block" id="BooleanNet.add">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet.add">[docs]</a>
+    <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add two boolean networks together.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ----------</span>
+<span class="sd">        network2 (BooleanNet): The boolean network to be added to the current network.</span>
+
+<span class="sd">        Output:</span>
+<span class="sd">        -------</span>
+<span class="sd">        The current network is updated with the contents of the second network merged into it.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        ---------</span>
+<span class="sd">        &gt;&gt;&gt; network1 = BooleanNet(&quot;rtt-format&quot;,3)</span>
+<span class="sd">        &gt;&gt;&gt; network1.load(([[1,1,0,0],[0,1],[0,0,0,0]],[[0,2],[0],[1,2]]))</span>
+<span class="sd">        &gt;&gt;&gt; network2 = BooleanNet(&quot;rtt-format&quot;,2)</span>
+<span class="sd">        &gt;&gt;&gt; network2.load(([[1,0],[1,1]],[[0],[0]]))</span>
+<span class="sd">        &gt;&gt;&gt; network1.add(network2)</span>
+<span class="sd">        &gt;&gt;&gt; print(network1.truth_tables), print(network1.regulators)</span>
+<span class="sd">        [[1, 1, 0, 0], [0, 1], [0, 0, 0, 0], [1, 0], [1, 1]]</span>
+<span class="sd">        [[0, 2], [0], [1, 2], [3], [3]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;NCF-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_ncf</span><span class="p">(</span><span class="n">network2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_rtt</span><span class="p">(</span><span class="n">network2</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_text</span><span class="p">(</span><span class="n">network2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type&quot;</span><span class="p">)</span></div>
+
+
+
+    <span class="c1">## Define the add_node function</span>
+<div class="viewcode-block" id="BooleanNet.add_node">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet.add_node">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_node</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new node to the boolean network.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ----------</span>
+<span class="sd">        node (int): The node to be added to the network.</span>
+
+<span class="sd">        Output:</span>
+<span class="sd">        -------</span>
+<span class="sd">        Updates the network by adding the specified node.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        ---------</span>
+<span class="sd">        &gt;&gt;&gt; network = BooleanNet(&quot;rtt-format&quot;,3)</span>
+<span class="sd">        &gt;&gt;&gt; network.load(([[1,1,0,0],[0,1],[0,0,0,0]],[[0,2],[0],[1,2]]))</span>
+<span class="sd">        &gt;&gt;&gt; network.add_node(4)</span>
+<span class="sd">        &gt;&gt;&gt; print(network.variables)</span>
+<span class="sd">        [0, 1, 2, 3, 4]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;NCF-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_node_ncf</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_node_rtt</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_node_text</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type&quot;</span><span class="p">)</span></div>
+
+
+
+    <span class="c1">## Define the add_edge function</span>
+<div class="viewcode-block" id="BooleanNet.add_edge">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet.add_edge">[docs]</a>
+    <span class="k">def</span> <span class="nf">add_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a new edge to the boolean network.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ----------</span>
+<span class="sd">        edge (tuple): A tuple where the first element is the node and the second element is a list of input nodes.</span>
+
+<span class="sd">        Output:</span>
+<span class="sd">        -------</span>
+<span class="sd">        Updates the network by adding the specified edge.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        ---------</span>
+<span class="sd">        &gt;&gt;&gt; network = BooleanNet(&quot;rtt-format&quot;,3)</span>
+<span class="sd">        &gt;&gt;&gt; network.load(([[1,1,0,0],[0,1],[0,0,0,0]],[[0,2],[0],[1,2]]))</span>
+<span class="sd">        &gt;&gt;&gt; network.add_edge((3, [1, 2]))</span>
+<span class="sd">        &gt;&gt;&gt; print(network.regulators)</span>
+<span class="sd">        [[0, 2], [0], [1, 2], [1, 2]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;NCF-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_edge_ncf</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_edge_rtt</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_edge_text</span><span class="p">(</span><span class="n">edge</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type&quot;</span><span class="p">)</span></div>
+
+
+
+    <span class="c1">## Define the change_format function</span>
+<div class="viewcode-block" id="BooleanNet.change_format">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet.change_format">[docs]</a>
+    <span class="k">def</span> <span class="nf">change_format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_format</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Change the format of the boolean network.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ----------</span>
+<span class="sd">        new_format (str): The new format to convert the network to. Options are &quot;NCF-format&quot;, &quot;rtt-format&quot;, and &quot;text-format&quot;.</span>
+
+<span class="sd">        Output:</span>
+<span class="sd">        -------</span>
+<span class="sd">        Updates the network to the new format.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            Currently only changing from &quot;text-format&quot; to &quot;rtt-format&quot; is implemented. </span>
+<span class="sd">            In this case, the method works well as long as the degree of the nodes is less than or equal to 15. </span>
+<span class="sd">            If the degree is greater than 15, a warning is issued. To modify this, change the max_degree parameter in the `change_format_text` method.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        ---------</span>
+<span class="sd">        &gt;&gt;&gt; network = BooleanNet(&quot;rtt-format&quot;,3)</span>
+<span class="sd">        &gt;&gt;&gt; network.change_format(&quot;text-format&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; print(network.input_type)</span>
+<span class="sd">        text-format</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;NCF-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_format_ncf</span><span class="p">(</span><span class="n">new_format</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_format_rtt</span><span class="p">(</span><span class="n">new_format</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">change_format_text</span><span class="p">(</span><span class="n">new_format</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type&quot;</span><span class="p">)</span></div>
+
+
+    <span class="c1">## Define the essential_regulators function</span>
+<div class="viewcode-block" id="BooleanNet.essential_regulators">
+<a class="viewcode-back" href="../../functions.html#booleantools.load.BooleanNet.essential_regulators">[docs]</a>
+    <span class="k">def</span> <span class="nf">essential_regulators</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Identify the essential regulators in the network.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        ----------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+
+<span class="sd">        Modifies internal attribute:</span>
+<span class="sd">            - `regulators`: A list of essential regulators for each node in the network.</span>
+
+<span class="sd">        .. note::</span>
+<span class="sd">            Code to correspondingly modify the truth tables needs to be added.</span>
+<span class="sd">            </span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        ---------</span>
+<span class="sd">        &gt;&gt;&gt; network = BooleanNet(&quot;rtt-format&quot;,3)</span>
+<span class="sd">        &gt;&gt;&gt; network.load(([[1,1,0,0],[0,1],[0,0,0,0]],[[0,2],[0],[1,2]]))</span>
+<span class="sd">        &gt;&gt;&gt; print(network.essential_regulators())</span>
+<span class="sd">        [[0, 2], [0], [1, 2]]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="kn">import</span> <span class="nn">booleantools.bn_tools</span> <span class="k">as</span> <span class="nn">bnt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span> <span class="o">=</span> <span class="p">[</span><span class="n">bnt</span><span class="o">.</span><span class="n">essential_variables</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">truth_table</span><span class="p">),</span> <span class="n">regulators</span><span class="p">)</span> <span class="k">for</span> <span class="n">truth_table</span><span class="p">,</span> <span class="n">regulators</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">)]</span></div>
+
+        <span class="c1">## Need to edit the truth tables as well!</span>
+
+        
+
+
+<span class="c1">##############################################################################################################################################################</span>
+<span class="c1">##############################################################################################################################################################</span>
+<span class="c1">##############################################################################################################################################################</span>
+    <span class="c1">## Functions for the NCF format</span>
+    <span class="c1">## These have not been implemented yet</span>
+    <span class="k">def</span> <span class="nf">load_ncf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">update_ncf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">add_ncf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network2</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">add_node_ncf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span> <span class="nf">add_edge_ncf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+        <span class="k">pass</span>
+    
+    <span class="k">def</span> <span class="nf">change_format_ncf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_format</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<span class="c1">##############################################################################################################################################################</span>
+<span class="c1">##############################################################################################################################################################</span>
+<span class="c1">##############################################################################################################################################################</span>
+    <span class="c1">## Functions for the text format</span>
+    <span class="k">def</span> <span class="nf">load_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Loads a network in text format, where the network is represented as a list of tuples. Each tuple consists of a node </span>
+<span class="sd">        and its corresponding update formula. The method also calculates the network variables and their regulators.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        input_data : list of tuple of str</span>
+<span class="sd">            A list where each tuple contains two strings:</span>
+<span class="sd">            - The first string represents the node (variable) name.</span>
+<span class="sd">            - The second string represents the update formula associated with that node.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If `input_data` is not a list of tuples, a ValueError is raised.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">            - After loading the data, the method computes two main properties:</span>
+<span class="sd">                - `self.variables`: A list of all node names.</span>
+<span class="sd">                - `self.regulators`: A list of the regulators for each variable, derived from the update formulas by ignoring logical </span>
+<span class="sd">                operators (&#39;and&#39;, &#39;or&#39;, &#39;not&#39;).</span>
+<span class="sd">            - The method also handles any constants found in the update formulas but not initially listed as nodes, </span>
+<span class="sd">            adding them to both `self.variables` and `self.update_formulae`.</span>
+<span class="sd">            - It replaces semicolons and forwardslashes in variable names with &#39;_sc_&#39; via `self.clean_variables()`.</span>
+<span class="sd">        </span>
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        input_data = [</span>
+<span class="sd">            (&quot;node1&quot;, &quot;A and B&quot;),</span>
+<span class="sd">            (&quot;node2&quot;, &quot;not A or C&quot;)</span>
+<span class="sd">        ]</span>
+<span class="sd">        This method would extract the variables and regulators for these nodes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">update_formulae</span> <span class="o">=</span> <span class="n">input_data</span>
+                <span class="c1"># Calculate variables (node names)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">]</span>
+                <span class="c1"># Calculate regulators from update formulas</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="n">logical_operators</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;and&#39;</span><span class="p">,</span> <span class="s1">&#39;or&#39;</span><span class="p">,</span> <span class="s1">&#39;not&#39;</span><span class="p">}</span>
+                <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">:</span>
+                    <span class="c1"># Extract variables from the update formula, excluding logical operators</span>
+                    <span class="n">right_variables</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[^()\s]+&#39;</span><span class="p">,</span> <span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">element</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">right_variables</span> <span class="k">if</span> <span class="n">element</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">logical_operators</span><span class="p">])))</span>
+                
+                <span class="k">for</span> <span class="n">regulators</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="n">regulators</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">variable</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">variable</span><span class="p">])</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">update_formulae</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">variable</span><span class="p">,</span> <span class="n">variable</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">variable</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">original_variables</span><span class="p">[</span><span class="n">variable</span><span class="p">]</span> <span class="o">=</span> <span class="n">variable</span>
+                
+                <span class="c1"># Replace special characters in variable names and regulators</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clean_variables</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input format. Input data should be a list of tuples&quot;</span><span class="p">)</span>
+        <span class="k">pass</span>
+
+
+    <span class="k">def</span> <span class="nf">update_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">state</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">add_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network2</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">add_node_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">add_edge_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+    <span class="k">def</span> <span class="nf">change_format_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_format</span><span class="p">,</span><span class="n">max_degree</span><span class="o">=</span><span class="mi">15</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">new_format</span> <span class="o">==</span> <span class="s2">&quot;NCF-format&quot;</span><span class="p">:</span>
+            <span class="k">pass</span>  
+        <span class="k">elif</span> <span class="n">new_format</span> <span class="o">==</span> <span class="s2">&quot;text-format&quot;</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The network is already in text format&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">new_format</span> <span class="o">==</span> <span class="s2">&quot;rtt-format&quot;</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">itertools</span>
+            <span class="c1">## Convert the text format to rtt format</span>
+            <span class="n">truth_tables</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">regulators</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_formulae</span><span class="p">)):</span>
+                <span class="n">degree</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">regulator_indices</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">regulator</span><span class="p">)</span> <span class="k">for</span> <span class="n">regulator</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+                <span class="n">regulators</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">regulator_indices</span><span class="p">)</span>
+                <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span><span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">degree</span><span class="o">&lt;=</span><span class="mi">15</span><span class="p">:</span>
+                    <span class="n">X</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">repeat</span> <span class="o">=</span> <span class="n">degree</span><span class="p">))</span>
+                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">degree</span><span class="p">):</span>
+                        <span class="n">x</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                        
+                        <span class="n">variable_values</span> <span class="o">=</span> <span class="p">{</span><span class="n">var</span><span class="p">:</span> <span class="n">val</span> <span class="k">for</span> <span class="n">var</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">x</span><span class="p">)}</span>
+                        
+                        <span class="n">f</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">,</span><span class="nb">eval</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_formulae</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="p">{},</span> <span class="n">variable_values</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The degree is </span><span class="si">{</span><span class="n">degree</span><span class="si">}</span><span class="s2"> which exceeds the maximum degree </span><span class="si">{</span><span class="n">max_degree</span><span class="si">}</span><span class="s2">. Continuing but the truth table may not be accurate.&quot;</span><span class="p">,</span> <span class="ne">UserWarning</span><span class="p">)</span>
+                        
+                <span class="n">truth_tables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span> <span class="o">=</span> <span class="n">truth_tables</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_type</span> <span class="o">=</span> <span class="s2">&quot;rtt-format&quot;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span> <span class="o">=</span> <span class="n">regulators</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+            
+                
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input type&quot;</span><span class="p">)</span>
+<span class="c1">##############################################################################################################################################################</span>
+<span class="c1">##############################################################################################################################################################</span>
+<span class="c1">##############################################################################################################################################################</span>
+    <span class="c1">## Functions for the rtt format</span>
+    <span class="k">def</span> <span class="nf">load_rtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_data</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">input_data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">input_data</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span> <span class="o">=</span> <span class="n">input_data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input format. Input data should be a tuple of two lists&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The number of rows in truth_tables should be equal to the number of nodes &quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The number of rows in regulators should be equal to the number of nodes &quot;</span><span class="p">)</span>
+            
+            <span class="c1"># Perform all checks in a single loop</span>
+            <span class="k">for</span> <span class="n">f_row</span><span class="p">,</span> <span class="n">i_row</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">):</span>
+                <span class="c1"># Check that the length of each row in F matches 2**n where n is the length of the corresponding row in I</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">f_row</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="o">**</span><span class="nb">len</span><span class="p">(</span><span class="n">i_row</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The length of each row in truth_tables should be 2**n where n is the length of the corresponding row in regulators&quot;</span><span class="p">)</span>
+                
+                <span class="c1"># Check that every row of F contains only 0 or 1</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">element</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">f_row</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each row in truth_tables should contain only 0 or 1 elements&quot;</span><span class="p">)</span>
+                
+                <span class="c1"># Check that every row of I contains elements from 0 to n-1 where n is the number of nodes</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">element</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">)</span> <span class="k">for</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">i_row</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each row in regulators should contain elements ranging from 0 to n-1 where n is the number of nodes&quot;</span><span class="p">)</span>
+                
+                <span class="c1"># Check that every row of I has unique elements</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">i_row</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">i_row</span><span class="p">)):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Each row in regulators should contain unique elements&quot;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Invalid input format. Input data should be a tuple of two lists&quot;</span><span class="p">)</span>
+        <span class="c1"># check that the input data is of the correct shape</span>
+    
+    
+    
+    
+    <span class="k">def</span> <span class="nf">update_rtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the state of the network in rtt format.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        state (list): Current state of the network.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">        list: Updated state of the network.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">updated_state</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">[</span><span class="n">node</span><span class="p">][</span><span class="nb">int</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">state</span><span class="p">[</span><span class="n">index</span><span class="p">])</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">input_nodes</span><span class="p">),</span> <span class="mi">2</span><span class="p">)]</span>
+            <span class="k">for</span> <span class="n">node</span><span class="p">,</span> <span class="n">input_nodes</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+        <span class="p">]</span>
+        
+        <span class="k">return</span> <span class="n">updated_state</span>
+    
+    
+    
+    
+    <span class="k">def</span> <span class="nf">add_rtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">network2</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add two boolean networks in rtt format.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        network2 (BooleanNet): The network to be added to the current network.</span>
+
+<span class="sd">        Output:</span>
+<span class="sd">        The current network with the second network added to it inplace.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Shift the indices in regulator networks2 by the number of nodes in the rttrst network</span>
+        <span class="n">I2</span> <span class="o">=</span> <span class="p">[[</span><span class="n">index</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">input_nodes</span><span class="p">]</span> <span class="k">for</span> <span class="n">input_nodes</span> <span class="ow">in</span> <span class="n">network2</span><span class="o">.</span><span class="n">regulators</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">network2</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">I2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">+=</span> <span class="n">network2</span><span class="o">.</span><span class="n">num_nodes</span>
+
+    
+
+    
+    <span class="k">def</span> <span class="nf">add_node_rtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_nodes</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="o">.</span><span class="n">append</span><span class="p">([])</span>
+        
+    
+
+    
+    <span class="k">def</span> <span class="nf">add_edge_rtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">edge</span><span class="p">):</span>
+        
+        <span class="n">node</span><span class="p">,</span> <span class="n">input_nodes</span> <span class="o">=</span> <span class="n">edge</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">regulators</span><span class="p">[</span><span class="n">node</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">input_nodes</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        fix this code&quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+        
+    <span class="k">def</span> <span class="nf">change_format_rtt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_format</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+        
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Load the boolean network</span>
+    <span class="c1"># Loading a boolean network in text format</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;text-format&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Boolean network initialized successfully&quot;</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; Boolean network initialized successfully</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of nodes: &quot;</span><span class="p">,</span> <span class="n">net</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">)</span> <span class="c1"># Should print the default number of nodes. Will be updated to the correct number after loading the network.</span>
+    <span class="c1"># &gt;&gt;&gt; Number of nodes: 1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input type: &quot;</span><span class="p">,</span> <span class="n">net</span><span class="o">.</span><span class="n">input_type</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; Input type: text-format</span>
+    <span class="n">input_data</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="p">(</span><span class="s2">&quot;node1&quot;</span><span class="p">,</span> <span class="s2">&quot;A and B&quot;</span><span class="p">),</span>
+            <span class="p">(</span><span class="s2">&quot;node2&quot;</span><span class="p">,</span> <span class="s2">&quot;not A or C&quot;</span><span class="p">)</span>
+        <span class="p">]</span>
+    
+    <span class="n">net</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+    <span class="c1"># Print the network</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">update_formulae</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; [(&#39;node1&#39;, &#39;A and B&#39;), (&#39;node2&#39;, &#39;not A or C&#39;)]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; [&#39;node1&#39;, &#39;node2&#39;, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; [[&#39;A&#39;, &#39;B&#39;], [&#39;A&#39;, &#39;C&#39;], [&#39;A&#39;], [&#39;B&#39;], [&#39;C&#39;]]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; 5</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">original_variables</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; {&#39;node1&#39;: &#39;node1&#39;, &#39;node2&#39;: &#39;node2&#39;, &#39;A&#39;: &#39;A&#39;, &#39;B&#39;: &#39;B&#39;, &#39;C&#39;: &#39;C&#39;}</span>
+    <span class="c1"># Change the format of the network to rtt format</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">change_format</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; [array([0, 0, 0, 1]), array([1, 1, 0, 1]), array([0, 1]), array([0, 1]), array([0, 1])]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; [[2, 3], [2, 4], [2], [3], [4]]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; 5</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">input_type</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; rtt-format</span>
+    <span class="c1"># print the reduced truth tables</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">)</span>
+    <span class="c1"># print the regulators for each node</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+
+    <span class="c1"># Loading a boolean network in rtt format</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="n">num_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Boolean network loaded successfully&quot;</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; Boolean network loaded successfully</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of nodes: &quot;</span><span class="p">,</span> <span class="n">net</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; Number of nodes: 3</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Input type: &quot;</span><span class="p">,</span> <span class="n">net</span><span class="o">.</span><span class="n">input_type</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; Input type: rtt-format</span>
+
+    <span class="n">net</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; [[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; [[0,2],[0],[1,2]]</span>
+    
+    <span class="n">net1</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span><span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">,</span><span class="n">num_nodes</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">net1</span><span class="o">.</span><span class="n">load</span><span class="p">(([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]],[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">0</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Boolean network loaded successfully&quot;</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; Boolean network loaded successfully</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">net1</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Boolean network added successfully&quot;</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; Boolean network added successfully</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">),</span> <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; [[1, 1, 0, 0], [0, 1], [0, 0, 0, 0], [1, 1, 0, 0], [0, 1], [0, 0, 0, 0]]</span>
+    <span class="c1"># &gt;&gt;&gt; [[0, 2], [0], [1, 2], [3, 5], [3], [4, 5]]</span>
+
+    <span class="c1"># Loading a textfile from the cell collective database</span>
+    <span class="c1"># We will load one of the large networks from the cell collective database</span>
+    <span class="c1"># The indegree of several nodes is greater than 15. So, we will get a warning.</span>
+    <span class="c1"># When we print the truth tables, we will see that the truth tables are empty for nodes with indegree greater than 15.</span>
+    <span class="n">net</span> <span class="o">=</span> <span class="n">BooleanNet</span><span class="p">(</span> <span class="n">input_type</span><span class="o">=</span><span class="s2">&quot;text-format&quot;</span><span class="p">)</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span><span class="s2">&quot;..&quot;</span><span class="p">,</span> <span class="s2">&quot;update_rules_cell_collective&quot;</span><span class="p">,</span> <span class="s2">&quot;ErbB (1-4) Receptor Signaling_23637902.txt&quot;</span><span class="p">)</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">parse_text_file</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="n">file_path</span><span class="p">))</span>
+    <span class="n">net</span><span class="o">.</span><span class="n">change_format</span><span class="p">(</span><span class="s2">&quot;rtt-format&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">formula</span><span class="p">,</span><span class="n">table</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">update_formulae</span><span class="p">,</span><span class="n">net</span><span class="o">.</span><span class="n">truth_tables</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">formula</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+            <span class="c1"># &gt;&gt;&gt; (&#39;ErbB3_Y1180&#39;, &#39;( EGFR_ErbB3 )  or ( ErbB2_ErbB3 )  or ( ErbB3_ErbB4 )&#39;)</span>
+            <span class="c1"># &gt;&gt;&gt; [0 1 1 1 1 1 1 1]</span>
+            <span class="c1"># &gt;&gt;&gt; (&#39;EGFR_EGFR_EGF_PM&#39;, &#39;( ( EGFR_EGFR_EGF_PM  ) and not ( EGFR_EGFR_EGF_CCP  ) )  or ( ( ( EGFR_Free and ( ( ( EGF ) )  and ( ( not EGFR_T654 ) ) )     ) and not ( EGFR_EGFR_EGF_CCP  )  ) and not ( ErbB2_Free  ) )&#39;)</span>
+            <span class="c1"># &gt;&gt;&gt; [0 0 0 0 0 0 0 0 1 1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 1 1 0 0 1 1 0 0 0 1 0 0 0 0 0 0 1 1 0 0 1 1 0 0 0 0 0 0 0 0 0 0 1 1 0 0 1 1 0 0]</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">table</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># &gt;&gt;&gt; (&#39;PI3K&#39;, &#39;( ( Gbg_i  ) and not ( PI3K_I  ) )  or ( ( Fak  ) and not ( PI3K_I  ) )  or ( ( E_cadherin  ) and not ( PI3K_I  ) )  or ( ( ErbB3_Y1257  ) and not ( PI3K_I  ) )  or ( ( Ras  ) and not ( PI3K_I  ) )  or ( ( Src and ( ( ( Cbl_RTK ) ) )     ) and not ( PI3K_I  ) )  or ( ( EGFR_Y920  ) and not ( PI3K_I  ) )  or ( ( ErbB4_Y1056  ) and not ( PI3K_I  ) )  or ( ( ErbB3_Y1203_05  ) and not ( PI3K_I  ) )  or ( ( Gab1  ) and not ( PI3K_I  ) )  or ( ( ErbB3_Y1270  ) and not ( PI3K_I  ) )  or ( ( EGFR_Y845  ) and not ( PI3K_I  ) )  or ( ( Crk  ) and not ( PI3K_I  ) )  or ( ( ErbB3_Y1178  ) and not ( PI3K_I  ) )  or ( ( ErbB3_Y1035  ) and not ( PI3K_I  ) )  or ( ( ErbB3_Y1241  ) and not ( PI3K_I  ) )&#39;)</span>
+                <span class="c1"># &gt;&gt;&gt; []</span>
+                <span class="c1"># This is because the indegree of the node is greater than 15</span>
+                <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;Press Enter to continue...&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">regulators</span><span class="p">)</span>
+    <span class="c1"># &gt;&gt;&gt; [[216, 100, 42, 143, 111, 160], [61], [61, 149, 224, 88, 174, 2], [84, 210, 3, 162, 172, 176, 169], [78, 216, 104, 128, 180, 95, 93, 4, 81, 67, 50], [27, 82, 23], [6, 61, 2, 199], [7, 216, 2], [4, 93], [155, 82, 31, 18], [3], [136, 11, 57, 212], [179], [216, 191, 0, 131, 156, 35], [61, 179], [221, 62, 144, 23, 46, 31], [216, 3, 96, 109, 61, 56, 30, 2], [82, 17, 23, 27, 76], [201, 173, 52, 225], [41], [58], [113, 74, 142, 80, 21, 211, 203, 73], [182, 92, 37, 68, 34, 161], [226, 227, 166, 191, 228, 229, 23, 52, 173, 225], [221, 62, 144, 23, 46, 31], [220], [26, 63, 172, 107, 85], [226, 173, 177, 52, 27, 225], [108, 216, 113, 106, 171, 93, 50, 29], [131, 80], [224, 149, 88, 174, 30], [201, 191, 227, 166, 173, 52, 225], [216, 42, 61, 218, 30, 2], [33, 171, 87], [34, 22, 222], [221, 204, 31, 13, 74, 144, 62, 142, 23, 34, 46, 203, 73, 222], [94], [161], [182, 36, 161], [4, 93], [141, 40, 207], [106, 3, 61, 58, 93, 4, 6, 2], [216, 42, 59, 149, 7], [221, 204, 62, 74, 144, 127, 142, 23, 34, 222, 46, 203, 73, 31], [105, 17, 76], [216], [191, 227, 166, 173, 52, 225], [59, 91, 230, 3], [231, 179, 188], [167, 49, 232, 187, 95, 14, 91], [216, 114, 0, 138, 93, 4, 43, 91, 50], [171], [18, 52, 46, 27, 233], [43, 72], [171, 91, 50, 179], [221, 204, 62, 74, 144, 162, 142, 23, 34, 24, 222, 46, 218, 160, 203, 73, 31], [152, 215, 110], [11, 61], [78, 128, 58, 125, 81, 57, 91], [216, 1, 59, 172, 7, 230], [216, 171, 150, 158, 95, 99, 10, 2, 212], [224, 61, 149, 174, 30, 2], [62, 191, 234, 166, 173, 203], [8, 208, 209, 39, 195, 90, 192, 194], [27, 82, 23], [216, 47, 0, 42, 83, 4, 43, 2], [3], [169, 179], [221, 119, 62], [27, 82, 23], [70, 112, 91, 95, 172, 179, 169], [140], [185], [204, 113, 106, 80, 21, 211, 203, 2, 73], [113, 74, 106, 142, 222], [221, 62, 122, 75, 92, 32, 196], [17, 235], [127, 83, 61], [162, 2, 3], [79, 172, 118, 98], [216, 148, 94, 21, 211, 2, 213, 29], [216, 42], [201, 173, 52, 225], [216, 42, 127, 47], [236, 140], [8, 208, 209, 39, 195, 90, 115, 192, 72, 194], [136, 60], [33, 216], [49, 3, 58, 219, 6], [216], [135, 4, 93], [87, 91, 40, 172], [75], [77, 104, 59, 110, 93, 180, 95, 4, 230, 50, 16], [61, 222], [167, 49, 95], [12, 179], [155, 82, 31, 18], [132, 79, 56, 98], [219, 99, 124], [62, 74, 15, 97, 34, 203, 222, 18, 142, 9, 5, 24, 221, 204, 82, 23, 149, 69, 64, 216, 144, 42, 218, 178, 46, 73, 31], [216, 204, 210, 74, 144, 221, 3, 62, 142, 23, 34, 19, 222, 46, 169, 73, 31, 203], [127], [75], [48], [23, 27, 228, 82], [25, 200, 126, 67], [171, 117, 40, 26], [116, 125], [216, 49, 96, 109, 91, 40], [210, 4, 179], [27, 82, 23], [181, 2, 55], [221, 62, 0, 206, 2], [216, 12, 1, 114, 61, 30, 172, 87], [140], [237, 214, 93, 125, 4, 67, 220], [137, 172, 121, 107, 85], [132, 79, 118], [221, 62, 13, 142, 203], [216, 152], [8, 208, 123, 90, 115, 72, 50], [103], [236], [238, 150, 124, 134], [216, 108, 204, 74, 144, 221, 62, 142, 23, 34, 58, 222, 46, 203, 73, 31], [65], [216, 42, 127, 47], [216, 32, 42, 128], [216, 42, 95, 152, 120, 99, 91, 212], [36], [13], [216, 114, 132, 171, 56, 98, 10, 91, 50], [27, 82, 23], [167, 60], [239], [86, 136, 150, 240], [8, 208, 209, 123, 39, 90, 115, 192, 72, 194, 50], [221, 62, 74, 144, 236, 142, 23, 34, 222, 46, 203, 73, 31], [182, 36, 94], [135], [59, 230, 183, 95], [221, 13, 74, 80, 142, 75, 211, 68, 2, 213], [221, 62, 144, 23, 46, 31], [167, 191, 124, 166, 136, 169], [221, 204, 62, 74, 144, 145, 0, 142, 61, 23, 34, 152, 222, 46, 203, 73, 31], [60, 187], [61, 75], [2], [236, 224, 58, 180, 4, 241], [154, 134, 146, 86], [155, 82, 31, 18], [145], [46, 27, 18], [60, 124], [201, 173, 225], [221, 62, 144, 23, 46, 31], [216, 221, 166, 127, 59], [158, 187, 183], [46, 27, 18], [221, 62, 144, 23, 46, 31], [36, 130], [163], [96, 171, 61, 169, 2], [34, 139], [216, 13, 4, 180], [221, 204, 62, 144, 166, 23, 242, 46], [167, 243, 150, 134], [216, 106, 7, 2, 168], [70, 244], [46, 27, 18], [107, 171, 186, 172], [221, 204, 31, 74, 62, 144, 142, 23, 34, 172, 46, 203, 73, 222], [82, 173, 228, 23, 245, 27], [216, 42, 6, 19, 20, 174, 7], [224, 149, 88, 174, 30, 175], [3, 87, 176], [27, 229, 44], [46, 27, 18], [169], [61, 205, 30], [181, 91, 219, 95], [36, 161], [183, 158, 187, 14, 91], [21, 113], [117, 140], [209, 132, 186, 115, 172, 192, 195, 50], [232, 146, 150, 187], [167, 3, 124, 136, 61, 56, 187, 87, 150], [1, 3, 132, 20, 91, 50], [46, 27, 18], [3], [93, 135, 145, 140], [61, 75], [4, 26, 93], [100, 0, 71, 56, 58, 140, 93, 4, 53], [56], [216, 221], [46, 27, 18], [2], [200, 1, 20, 54, 179, 189, 50], [201, 155, 82, 18, 246, 31], [46, 27, 18], [62, 80, 75, 211, 68, 203, 2, 73, 213], [147, 204, 184, 166, 61, 103, 75, 21, 73], [1], [206, 131, 68, 2, 213], [171, 91, 150], [84], [221, 204, 62, 74, 209, 216, 0, 142, 224, 23, 34, 222, 46, 203, 73, 31, 55], [210, 101, 181, 2, 55], [221, 62, 61, 131, 68, 2, 213, 29], [136, 11, 212], [221, 119, 62, 2], [216, 116, 169], [13, 0, 171, 83, 61, 43, 2], [216, 49, 183, 42, 138, 127, 143, 187, 15, 218, 129, 150, 66], [46, 27, 18], [221, 62, 144, 23, 152, 218, 46, 31], [124, 219, 99, 14, 181], [108, 204, 62, 74, 221, 216, 144, 138, 142, 23, 34, 222, 46, 203, 73, 31], [221, 227, 191, 166, 142, 173], [147, 74, 184, 61, 103, 75, 21, 34, 222], [46, 27, 18], [216, 217, 13, 145, 190, 42, 83, 56, 202, 95, 116, 247, 157, 198, 153, 197, 170, 151], [225], [226], [227], [228], [229], [230], [231], [232], [233], [234], [235], [236], [237], [238], [239], [240], [241], [242], [243], [244], [245], [246], [247]]</span>
+    
+    
+    
+</pre></div>
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright Copyright (c) 2024, VENKATA SAI NARAYANA BAVISETTY.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>

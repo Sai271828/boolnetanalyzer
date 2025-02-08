@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html  lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1"><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <title>Boolean Network Representations</title>
+    
+          <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+          <link rel="stylesheet" href="_static/theme.css " type="text/css" />
+      
+      <!-- sphinx script_files -->
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+
+      
+      <!-- bundled in js (rollup iife) -->
+      <!-- <script src="_static/theme-vendors.js"></script> -->
+      <script src="_static/theme.js" defer></script>
+    
+  <link rel="index" title="Index" href="genindex.html" />
+  <link rel="search" title="Search" href="search.html" />
+  <link rel="next" title="Package Overview" href="functions.html" />
+  <link rel="prev" title="Installation" href="installation.html" /> 
+  </head>
+
+  <body>
+    <div id="app">
+    <div class="theme-container" :class="pageClasses"><navbar @toggle-sidebar="toggleSidebar">
+  <router-link to="index.html" class="home-link">
+    
+      <span class="site-name">Boolean Network Tools</span>
+    
+  </router-link>
+
+  <div class="links">
+    <navlinks class="can-hide">
+
+
+
+    </navlinks>
+  </div>
+</navbar>
+
+      
+      <div class="sidebar-mask" @click="toggleSidebar(false)">
+      </div>
+        <sidebar @toggle-sidebar="toggleSidebar">
+          
+          <navlinks>
+            
+
+
+
+            
+          </navlinks><div id="searchbox" class="searchbox" role="search">
+  <div class="caption"><span class="caption-text">Quick search</span>
+    <div class="searchformwrapper">
+      <form class="search" action="search.html" method="get">
+        <input type="text" name="q" />
+        <input type="submit" value="Search" />
+        <input type="hidden" name="check_keywords" value="yes" />
+        <input type="hidden" name="area" value="default" />
+      </form>
+    </div>
+  </div>
+</div><div class="sidebar-links" role="navigation" aria-label="main navigation">
+  
+    <div class="sidebar-group">
+      <p class="caption">
+        <span class="caption-text"><a href="index.html#boolean-tools">boolean tools</a></span>
+      </p>
+      <ul class="current">
+        
+          <li class="toctree-l1 ">
+            
+              <a href="installation.html" class="reference internal ">Installation</a>
+            
+
+            
+          </li>
+
+        
+          <li class="toctree-l1 current">
+            
+              <a href="#" class="reference internal current">Representing Boolean Networks</a>
+            
+
+            
+              <ul>
+                
+                  <li class="toctree-l2"><a href="#random-boolean-networks" class="reference internal">Random Boolean Networks</a></li>
+                
+                  <li class="toctree-l2"><a href="#nested-canalizing-functions-ncf" class="reference internal">Nested Canalizing Functions (NCF)</a></li>
+                
+              </ul>
+            
+          </li>
+
+        
+          <li class="toctree-l1 ">
+            
+              <a href="functions.html" class="reference internal ">Reference</a>
+            
+
+            
+          </li>
+
+        
+      </ul>
+    </div>
+  
+</div>
+        </sidebar>
+
+      <page>
+          <div class="body-header" role="navigation" aria-label="navigation">
+  
+  <ul class="breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+    
+    <li>Boolean Network Representations</li>
+  </ul>
+  
+
+  <ul class="page-nav">
+  <li class="prev">
+    <a href="installation.html"
+       title="previous chapter">← Installation</a>
+  </li>
+  <li class="next">
+    <a href="functions.html"
+       title="next chapter">Package Overview →</a>
+  </li>
+</ul>
+  
+</div>
+<hr>
+          <div class="content" role="main" v-pre>
+            
+  <section id="boolean-network-representations">
+<h1>Boolean Network Representations<a class="headerlink" href="#boolean-network-representations" title="Link to this heading">¶</a></h1>
+<p>This package provides several subclasses of Boolean Networks, each offering more efficient representations than the general case. Below, we outline the supported representations:</p>
+<section id="random-boolean-networks">
+<h2>Random Boolean Networks<a class="headerlink" href="#random-boolean-networks" title="Link to this heading">¶</a></h2>
+<p>For random Boolean networks, we offer two key representations:</p>
+<ol class="arabic">
+<li><dl>
+<dt><strong>Formula-Based Representation (FBR):</strong></dt><dd><ul class="simple">
+<li><p>This representation uses a logical formula to define the network.</p></li>
+<li><p>The formula consists of a conjunction of disjunctions of literals.</p></li>
+<li><p>The formula is stored as a string.</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span> <span class="o">=</span> <span class="p">((</span><span class="n">x1</span> <span class="ow">or</span> <span class="n">x2</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">x1</span> <span class="ow">or</span> <span class="n">x2</span><span class="p">),</span> <span class="p">(</span><span class="n">x1</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">x2</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>For the exact format, see the</p>
+</dd>
+</dl>
+</li>
+<li><dl>
+<dt><strong>Reduced Truth Table (RTT):</strong></dt><dd><ul class="simple">
+<li><p>This representation uses the truth table of the network.</p></li>
+<li><p>The truth table is stored as a list of 0’s and 1’s.</p></li>
+<li><p>Each integer represents the output of the network for a particular input.</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="ow">and</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is represented as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+</pre></div>
+</div>
+<p>In this case, the first list represents the output of the first node when the inputs are 00, 01, 10, 11 respectively, and the second list represents the outputs of the second node when the inputs are 0 and 1 respectively.</p>
+</dd>
+</dl>
+</li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Currently, support for Nested Canalizing Functions (NCF) is unavailable.</p>
+</div>
+</section>
+<section id="nested-canalizing-functions-ncf">
+<h2>Nested Canalizing Functions (NCF)<a class="headerlink" href="#nested-canalizing-functions-ncf" title="Link to this heading">¶</a></h2>
+<p>This representation is based on the concept of canalizing functions:</p>
+<ul class="simple">
+<li><p>A function is <em>canalizing</em> if it has a specific input that can determine the output regardless of other inputs.</p></li>
+<li><p>A function is <em>nested canalizing</em> if it has canalizing inputs that are themselves canalizing.</p></li>
+</ul>
+<p>The NCF representation is stored as a list of integers, where each integer represents the canalizing input of the corresponding node.</p>
+<p><strong>Example:</strong></p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">(</span><span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span> <span class="ow">and</span> <span class="n">x2</span><span class="p">,</span> <span class="n">x1</span> <span class="ow">or</span> <span class="n">x2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>is represented as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="k">for</span> <span class="n">x1</span> <span class="ow">and</span> <span class="n">x2</span>
+<span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span> <span class="k">for</span> <span class="n">x1</span> <span class="ow">or</span> <span class="n">x2</span>
+</pre></div>
+</div>
+</section>
+</section>
+
+
+          </div>
+          <div class="page-nav">
+            <div class="inner"><ul class="page-nav">
+  <li class="prev">
+    <a href="installation.html"
+       title="previous chapter">← Installation</a>
+  </li>
+  <li class="next">
+    <a href="functions.html"
+       title="next chapter">Package Overview →</a>
+  </li>
+</ul><div class="footer" role="contentinfo">
+      &#169; Copyright Copyright (c) 2024, VENKATA SAI NARAYANA BAVISETTY.
+    <br>
+    Created using <a href="http://sphinx-doc.org/">Sphinx</a> 7.3.7 with <a href="https://github.com/schettino72/sphinx_press_theme">Press Theme</a> 0.9.1.
+</div>
+            </div>
+          </div>
+      </page>
+    </div></div>
+    
+    
+  </body>
+</html>
