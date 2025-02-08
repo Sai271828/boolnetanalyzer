@@ -16,3 +16,4 @@ sphinxcontrib-napoleon
 numpy
 pandas
 python-dotenv
+sympy
