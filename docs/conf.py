@@ -56,7 +56,7 @@ intersphinx_mapping = {
     "sphinx": ("https://www.sphinx-doc.org/en/master/", None),
 }
 intersphinx_disabled_domains = ["std"]
-autodoc_mock_imports = ['numpy', 'pandas']
+autodoc_mock_imports = ['numpy', 'pandas','dotenv','requests','bs4','matplotlib','networkx','scipy','sklearn','seaborn','tqdm','joblib','sklearn','sklearn.model_selection','sklearn.metrics','sklearn.ensemble','sklearn.linear_model','sklearn.preprocessing','sklearn.pipeline','sklearn.feature_selection','sklearn.svm','sklearn.tree','sklearn.neural_network','sklearn.cluster','sklearn.decomposition']
 templates_path = ["_templates"]
 
 autodoc_class_signature = 'separated' 
