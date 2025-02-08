@@ -1,4 +1,4 @@
-Boolean Tools
+Boolean Network Analyzer
 =============
 
 This package is a collection of mathematical tools to analyze Boolean networks.
@@ -7,13 +7,13 @@ The package provides tools to generate random Boolean networks, analyze their dy
 
 The package is organized into the following modules:
 
-* :mod:`booleantools.utils` - Utility functions
+* :mod:`boolnetanalyzer.utils` - Utility functions
 
-* :mod:`booleantools.random_networks` - Functions to generate random Boolean networks
+* :mod:`boolnetanalyzer..random_networks` - Functions to generate random Boolean networks
 
-* :mod:`booleantools.bn_tools` - Functions to analyze Boolean networks
+* :mod:`boolnetanalyzer..bn_tools` - Functions to analyze Boolean networks
 
-* :mod:`booleantools.load` - Functions to load Boolean networks from files
+* :mod:`boolnetanalyzer..load` - Functions to load Boolean networks from files
 
 The package is developed by the Laboratory for Systems Medicine at the University of Florida.
 
