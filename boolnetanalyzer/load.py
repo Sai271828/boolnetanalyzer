@@ -224,8 +224,11 @@ class BooleanNet():
         when the class was initialized, otherwise a `ValueError` will be raised.
 
         :param input_data: The input data to load into the class. The structure of the input depends on the format type:
-            - **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
-            - **rtt-format**: Data structured using reduced truth tables.
+
+            **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
+
+            **rtt-format**: Data structured using reduced truth tables.
+            
                 - This is a tuple consisting of two lists:
                     1. The first list contains the reduced truth tables for each node. Each entry in this list represents the truth table for the corresponding node.
                     2. The second list contains the regulators for each node. Each entry represents the nodes that regulate the output of the corresponding node.
