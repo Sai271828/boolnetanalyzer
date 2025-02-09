@@ -248,12 +248,10 @@ class BooleanNet():
                     
                     >>> [("x1", "x2 and not x1"), ("x2", "x1 or x3")]
                 
-                - In this case, the **variables** are stored in `self.variables`, the **regulators** are stored in `self.regualtors`  and the **update formulas** in `self.update_formulae`.
+                - In this case, the **variables** are stored in `self.variables`, the **regulators** are stored in `self.regulators` and the **update formulas** in `self.update_formulae`.
                 .. note::
 
                     The constants found in the update formulas but not initially listed as nodes are added to both `self.variables` and `self.update_formulae`.
-
-
 
         Raises
         ------
@@ -273,7 +271,7 @@ class BooleanNet():
         >>> print(network.update_formulae)
         [('A', 'A and B'), ('B', 'not A')]
         """
-        
+                
         if self.input_type == "NCF-format":
             self.load_ncf(input_data)
         elif self.input_type == "rtt-format":
