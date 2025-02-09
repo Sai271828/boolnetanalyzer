@@ -223,7 +223,9 @@ class BooleanNet():
         based on the format type set during initialization. The format must match the input type provided 
         when the class was initialized, otherwise a `ValueError` will be raised.
 
-        :param input_data: varies
+        Parameters:
+        -------------------
+          
             The input data to load into the class. The structure of the input depends on the format type:
 
             **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
@@ -259,9 +261,12 @@ class BooleanNet():
                 .. note::
                     The constants found in the update formulas but not initially listed as nodes are added to both `self.variables` and `self.update_formulae`.
 
-        :raises ValueError: If the input format type is not one of the expected types ("NCF-format", "rtt-format", or "text-format"), a `ValueError` is raised.
+        Raises:
+        -----------------
+          ValueError: If the input format type is not one of the expected types ("NCF-format", "rtt-format", or "text-format"), a `ValueError` is raised.
 
-        :example:
+        Examples:
+        -----------------
             
             >>> network = BooleanNet("rtt-format", 3)
             >>> network.load(([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]]))
