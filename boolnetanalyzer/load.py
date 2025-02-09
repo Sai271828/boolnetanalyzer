@@ -216,6 +216,7 @@ class BooleanNet():
         
     ## Define the load function
     def load(self, input_data):
+        
         """
         Loads the input data into the class instance based on the specified input format type.
 
@@ -223,11 +224,10 @@ class BooleanNet():
         based on the format type set during initialization. The format must match the input type provided 
         when the class was initialized; otherwise, a `ValueError` will be raised.
 
-        Parameters:
-        -----------
-        input_data : varies
-            The input data to load into the class. The structure of the input depends on the format type:
-
+        :param input_data: The input data to load into the class. 
+        :type input_data: varies
+        
+            The structure of the input depends on the format type:
             **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
 
             **rtt-format**: Data structured using reduced truth tables.
@@ -239,45 +239,40 @@ class BooleanNet():
             2. The second list contains the regulators for each node. Each entry represents the nodes that regulate the output of the corresponding node.
 
             Example:
-
+                    
             >>> ([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]])
-
+                    
             In this case, the truth tables are stored in the variable `self.truth_tables` and the regulators in the variable `self.regulators`.
 
             **text-format**: Data structured as text-based formulas.
-
             This is a list of tuples where each tuple consists of:
-
+                
             1. The first string representing the node (variable) name.
-
+                
             2. The second string representing the update formula associated with that node.
 
             Example:
-
+                
             >>> [("x1", "x2 and not x1"), ("x2", "x1 or x3")]
-
+            
             In this case, the variables are stored in `self.variables`, the regulators are stored in `self.regulators`, and the update formulas in `self.update_formulae`.
 
                 .. note::
                     The constants found in the update formulas but not initially listed as nodes are added to both `self.variables` and `self.update_formulae`.
 
-        Raises:
-        -------
-        ValueError
-            If the input format type is not one of the expected types ("NCF-format", "rtt-format", or "text-format"), a `ValueError` is raised.
+        :raises ValueError: If the input format type is not one of the expected types ("NCF-format", "rtt-format", or "text-format"), a `ValueError` is raised.
 
-        Examples:
-        ---------
-        >>> network = BooleanNet("rtt-format", 3)
-        >>> network.load(([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]]))
-        >>> print(network.truth_tables)
-        [[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]]
-        >>> print(network.regulators)
-        [[0, 2], [0], [1, 2]]
-        >>> network = BooleanNet("text-format", 2)
-        >>> network.load([("A", "A and B"), ("B", "not A")])
-        >>> print(network.update_formulae)
-        [('A', 'A and B'), ('B', 'not A')]
+        :example:
+            >>> network = BooleanNet("rtt-format", 3)
+            >>> network.load(([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]]))
+            >>> print(network.truth_tables)
+            [[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]]
+            >>> print(network.regulators)
+            [[0, 2], [0], [1, 2]]
+            >>> network = BooleanNet("text-format", 2)
+            >>> network.load([("A", "A and B"), ("B", "not A")])
+            >>> print(network.update_formulae)
+            [('A', 'A and B'), ('B', 'not A')]
         """
         # update the state of the network
         if self.input_type == "NCF-format":
