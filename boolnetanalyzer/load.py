@@ -228,15 +228,15 @@ class BooleanNet():
         **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
 
         **rtt-format**: Data structured using **reduced truth tables**.
-            |This is a tuple consisting of two lists:
-            |1. The **first list** contains the **reduced truth tables** for each node. Each entry in this list represents the truth table for the corresponding node.
-            |2. The **second list** contains the **regulators** for each node. Each entry represents the nodes that regulate the output of the corresponding node.
+            | This is a tuple consisting of two lists:
+            | 1. The **first list** contains the **reduced truth tables** for each node. Each entry in this list represents the truth table for the corresponding node.
+            | 2. The **second list** contains the **regulators** for each node. Each entry represents the nodes that regulate the output of the corresponding node.
             
-            |Example:
+            | Example:
 
             >>> ([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]])
                 
-            |In this case, the **truth tables** are stored in the variable `self.truth_tables` and the **regulators** in the variable `self.regulators`.
+            | In this case, the **truth tables** are stored in the variable `self.truth_tables` and the **regulators** in the variable `self.regulators`.
 
         **text-format**: Data structured as **text-based formulas**.
             This is a list of tuples where each tuple consists of:
@@ -252,7 +252,7 @@ class BooleanNet():
 
                 The constants found in the update formulas but not initially listed as nodes are added to both `self.variables` and `self.update_formulae`.
 
-        Raises
+        Raises:
         ------
         ValueError
             If the input format type is not one of the expected types ("NCF-format", "rtt-format", or "text-format"),
