@@ -223,7 +223,10 @@ class BooleanNet():
         based on the format type set during initialization. The format must match the input type provided 
         when the class was initialized, otherwise a `ValueError` will be raised.
 
-        :param input_data: varies  
+        Parameters
+        ---------------
+        
+            input_data:
         
             The input data to load into the class. The structure of the input depends on the format type:
 
