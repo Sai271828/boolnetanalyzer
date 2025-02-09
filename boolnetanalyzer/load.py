@@ -225,9 +225,9 @@ class BooleanNet():
 
         The input data to load into the class. The structure of the input depends on the format type:
 
-        - **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
+        **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
 
-        - **rtt-format**: Data structured using **reduced truth tables**.
+        **rtt-format**: Data structured using **reduced truth tables**.
             This is a tuple consisting of two lists:
             1. The **first list** contains the **reduced truth tables** for each node. Each entry in this list represents the truth table for the corresponding node.
             2. The **second list** contains the **regulators** for each node. Each entry represents the nodes that regulate the output of the corresponding node.
@@ -236,7 +236,7 @@ class BooleanNet():
                 
             In this case, the **truth tables** are stored in the variable `self.truth_tables` and the **regulators** in the variable `self.regulators`.
 
-        - **text-format**: Data structured as **text-based formulas**.
+        **text-format**: Data structured as **text-based formulas**.
             This is a list of tuples where each tuple consists of:
             1. The **first string** representing the node (variable) name.
             2. The **second string** representing the **update formula** associated with that node.
