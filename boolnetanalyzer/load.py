@@ -228,27 +228,24 @@ class BooleanNet():
         - **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
 
         - **rtt-format**: Data structured using **reduced truth tables**.
-        - This is a tuple consisting of two lists:
+        This is a tuple consisting of two lists:
             1. The **first list** contains the **reduced truth tables** for each node. Each entry in this list represents the truth table for the corresponding node.
             2. The **second list** contains the **regulators** for each node. Each entry represents the nodes that regulate the output of the corresponding node.
-        - Example:
+        Example:
+        >>> ([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]])
             
-            
-
-            >>> ([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]])
-            
-        - In this case, the **truth tables** are stored in the variable `self.truth_tables` and the **regulators** in the variable `self.regulators`.
+        In this case, the **truth tables** are stored in the variable `self.truth_tables` and the **regulators** in the variable `self.regulators`.
 
         - **text-format**: Data structured as **text-based formulas**.
-            - This is a list of tuples where each tuple consists of:
-                1. The **first string** representing the node (variable) name.
-                2. The **second string** representing the **update formula** associated with that node.
-            - Example:
+        This is a list of tuples where each tuple consists of:
+            1. The **first string** representing the node (variable) name.
+            2. The **second string** representing the **update formula** associated with that node.
+        Example:
                 
 
-                >>> [("x1", "x2 and not x1"), ("x2", "x1 or x3")]
+        >>> [("x1", "x2 and not x1"), ("x2", "x1 or x3")]
             
-            - In this case, the **variables** are stored in `self.variables`, the **regulators** are stored in `self.regulators` and the **update formulas** in `self.update_formulae`.
+        In this case, the **variables** are stored in `self.variables`, the **regulators** are stored in `self.regulators` and the **update formulas** in `self.update_formulae`.
             .. note::
 
                 The constants found in the update formulas but not initially listed as nodes are added to both `self.variables` and `self.update_formulae`.
