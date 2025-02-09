@@ -265,12 +265,13 @@ class BooleanNet():
 
         Examples:
         ---------
-        >>> network = BooleanNet("rtt-format",3)
-        >>> network.load(([[1,1,0,0],[0,1],[0,0,0,0]],[[0,2],[0],[1,2]]))
+        ```python
+        >>> network = BooleanNet("rtt-format", 3)
+        >>> network.load(([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]]))
         >>> print(network.truth_tables), print(network.regulators)
         [[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]]
         [[0, 2], [0], [1, 2]]
-        >>> network = BooleanNet("text-format",2)
+        >>> network = BooleanNet("text-format", 2)
         >>> network.load([("A", "A and B"), ("B", "not A")])
         >>> print(network.update_formulae)
         [('A', 'A and B'), ('B', 'not A')]
