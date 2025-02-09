@@ -226,7 +226,7 @@ class BooleanNet():
         Parameters
         ---------------
         
-            input_data:
+            input_data: varies
         
             The input data to load into the class. The structure of the input depends on the format type:
 
