@@ -224,10 +224,8 @@ class BooleanNet():
         when the class was initialized, otherwise a `ValueError` will be raised.
 
         Parameters
-        ---------------
-        
-            input_data: varies
-        
+        ----------
+        input_data : varies
             The input data to load into the class. The structure of the input depends on the format type:
 
             **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
