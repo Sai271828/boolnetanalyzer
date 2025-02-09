@@ -236,7 +236,9 @@ class BooleanNet():
                     2. The **second list** contains the **regulators** for each node. Each entry represents the nodes that regulate the output of the corresponding node.
                 - Example:
                     
-                    >>> ([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]])
+                    ```python
+                    ([[1, 1, 0, 0], [0, 1], [0, 0, 0, 0]], [[0, 2], [0], [1, 2]])
+                    ```
                     
                 - In this case, the **truth tables** are stored in the variable `self.truth_tables` and the **regulators** in the variable `self.regulators`.
 
@@ -246,7 +248,9 @@ class BooleanNet():
                     2. The **second string** representing the **update formula** associated with that node.
                 - Example:
                     
-                    >>> [("x1", "x2 and not x1"), ("x2", "x1 or x3")]
+                    ```python
+                    [("x1", "x2 and not x1"), ("x2", "x1 or x3")]
+                    ```
                 
                 - In this case, the **variables** are stored in `self.variables`, the **regulators** are stored in `self.regulators` and the **update formulas** in `self.update_formulae`.
                 .. note::
