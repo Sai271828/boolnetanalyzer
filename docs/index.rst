@@ -34,4 +34,5 @@ The package is developed by the Laboratory for Systems Medicine at the Universit
 
 Acknowledgements
 ================
-Much of the code in this package is based on the work of Claus Kadelka and his collaborators available at [DesignGenePrinciples](https://github.com/ckadelka/DesignPrinciplesGeneNetworks).
+
+Much of the code in this package is based on the work of Claus Kadelka and his collaborators, available at `DesignGenePrinciples <https://github.com/ckadelka/DesignPrinciplesGeneNetworks>`_.
