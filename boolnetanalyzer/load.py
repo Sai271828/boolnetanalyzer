@@ -223,7 +223,9 @@ class BooleanNet():
         based on the format type set during initialization. The format must match the input type provided 
         when the class was initialized, otherwise a `ValueError` will be raised.
 
-        :param input_data: The input data to load into the class. The structure of the input depends on the format type:
+        :param input_data: varies  
+        
+            The input data to load into the class. The structure of the input depends on the format type:
 
             **NCF-format**: Data structured according to the NCF format. Currently, this format is **not implemented** in the class.
 
@@ -254,7 +256,7 @@ class BooleanNet():
                 >>> [("x1", "x2 and not x1"), ("x2", "x1 or x3")]
                     
                 In this case, the variables are stored in `self.variables`, the regulators are stored in `self.regulators` and the update formulas in `self.update_formulae`.
-                
+
                 .. note::
                     The constants found in the update formulas but not initially listed as nodes are added to both `self.variables` and `self.update_formulae`.
 
